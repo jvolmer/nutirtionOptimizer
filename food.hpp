@@ -1,23 +1,24 @@
 #ifndef FOOD_H
 #define FOOD_H
 #include <string>
+#include <vector>
 
 class Food{
 
 private:
     std::string m_name;
-    std::string m_family;
-    double m_carbonhydrateVal;
-    double m_omega3Val;
-    double m_ORACVal;
+    std::vector<double> m_nutritionValues;
+    double m_min;
+    double m_max;
 
 public:
-    Food(std::string name, double carbonhydrateVal=0., double omega3Val=0., double ORACVal=0., std::string family="");
+    Food(std::string name, double min=0, double max=0);
+    Food(std::string name, const std::vector<double>& nutritions, double min=0, double max=0);
 
-    void setNutritionValues(double carbohydrateVal=0., double omega3Val=0., double ORACVal=0.);
     std::string getName(){ return m_name; }
-    std::string getFamily(){ return m_family; }
-    double getCarbonhydrateValue(){ return m_carbonhydrateVal; }
+    double getMin(){ return m_min; }
+    double getMax(){ return m_max; }
+    std::vector<double>& getNutritionValues(){ return m_nutritionValues; }
 };
 
 #endif
