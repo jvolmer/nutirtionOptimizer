@@ -10,10 +10,11 @@ private:
     std::vector<double> m_nutritionValues;
     double m_min;
     double m_max;
-
+    double m_cost;
+    
 public:
-    Food(std::string name, double min=0, double max=0);
-    Food(std::string name, const std::vector<double>& nutritions, double min=0, double max=0);
+    Food(std::string name, double min=0, double max=0, double cost=.5);
+    Food(std::string name, const std::vector<double>& nutritions, double min=0, double max=0, double cost=.5);
     // Food(std::string foodString);
     friend bool operator== (const Food& lhs, const Food& rhs);
 
@@ -21,7 +22,7 @@ public:
     double getMin(){ return m_min; }
     double getMax(){ return m_max; }
     const std::vector<double>& getNutritionValues(){ return m_nutritionValues; }
-
+    double getCost(){ return m_cost; }
     // std::string getString();
 };
 
