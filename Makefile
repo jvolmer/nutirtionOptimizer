@@ -4,8 +4,10 @@ LDFLAGS  = -lm
 LDFLAGSTEST = -lboost_unit_test_framework
 
 TARGETS = main.x
-TESTS = food.test
-TESTOBJECTS = food_test.o
+OBJECTS = food.o store.o
+
+TESTS = food.test store.test
+TESTOBJECTS = food_test.o store_test.o
 
 all: $(TARGETS)
 
@@ -17,7 +19,7 @@ tests : $(TESTS)
 # done
 
 # create targets
-main.x : main.o food.o
+main.x : main.o $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 # create tests
@@ -27,15 +29,23 @@ main.x : main.o food.o
 	@./$@ #--log_level=test_suite
 	@echo 
 
+store.test : store_test.o store.o food.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS)
+	@echo Running $@
+	@./$@ #--log_level=test_suite
+	@echo 
+
+
 # create test objetcs
-%_test.o : %.hpp
+food_test.o : food.hpp
+store_test.o : store.hpp food.hpp
 
 # create objects
 food.o : food.hpp
-
+store.o : store.hpp food.hpp
 
 clean : 
-	rm -f *.x *.o
+	rm -f *.x *.o *.test
 
 # targets that are not files
 .PHONY : all tests clean
