@@ -6,7 +6,7 @@ Store::Store(std::string name, std::string fileName):
 {
 }
 
-void Store::addFood(Food& food)
+void Store::addFood(const Food& food)
 {
     m_food.push_back(food);
 }

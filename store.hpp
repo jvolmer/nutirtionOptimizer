@@ -18,7 +18,7 @@ public:
     const std::vector<Food>& getFood(){ return m_food; }
     std::string getFileName(){ return m_fileName; }
 
-    void addFood(Food& food);
+    void addFood(const Food& food);
     // void readFoodString();
     // void read();
     // void write();
