@@ -27,3 +27,8 @@ Food::Food(std::string name, double min, double max):
     }    
 }
 
+bool operator== (const Food& lhs, const Food& rhs)
+{
+    bool out = ( (lhs.m_name == rhs.m_name) && (lhs.m_min == rhs.m_min) && (lhs.m_max == rhs.m_max) && (lhs.m_nutritionValues == rhs.m_nutritionValues) );
+    return out;
+}
