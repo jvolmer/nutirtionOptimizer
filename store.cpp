@@ -1,12 +1,31 @@
 #include "store.hpp"
 
-Store::Store(std::string name, std::string fileName):
+Store::Store(const std::string& name, const std::string& fileName):
     m_name {name},
     m_fileName {fileName}
 {
 }
 
-void Store::addFood(const Food& food)
+void Store::computeFoodPlan(const Person& person)
 {
-    m_food.push_back(food);
+    GnuLinearSolver solver(GLP_MIN);
+    
+    for (const Food& food : m_food)
+    {
+        double cost = food.getCost();
+        solver.addProblemCoefficient(cost);
+        solver.addConstraintCoefficients(food.getNutritionValues());
+        solver.addStructuralBound({GLP_DB, food.getMin(), food.getMax()});
+    }
+
+    const std::vector<double>& nutritionMinima = person.getNutritionMinima();
+    for (double nutrition : nutritionMinima)
+        solver.addAuxiliaryBound({GLP_LO, nutrition, 0.});
+
+    solver.prepare();
+    solver.solve();
+    const std::vector<double>& results = solver.getResultVariables();
+    
+    for (unsigned i=0; i<m_food.size(); i++)
+        m_food[i].setAmount(results[i]);
 }

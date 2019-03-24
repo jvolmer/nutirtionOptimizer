@@ -29,7 +29,7 @@ main.x : main.o $(OBJECTS)
 	@./$@ #--log_level=test_suite
 	@echo 
 
-store.test : store_test.o store.o food.o
+store.test : store_test.o store.o food.o person.o solver.o
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS)
 	@echo Running $@
 	@./$@ #--log_level=test_suite
@@ -44,13 +44,13 @@ person.test : person_test.o person.o food.o
 
 # create test objetcs
 food_test.o : food.hpp
-store_test.o : store.hpp food.hpp
+store_test.o : store.hpp food.hpp solver.hpp person.hpp
 person_test.o : person.hpp food.hpp
 solver_test.o : solver.hpp
 
 # create objects
 food.o : food.hpp
-store.o : store.hpp food.hpp
+store.o : store.hpp food.hpp solver.hpp person.hpp
 person.o : person.hpp food.hpp
 solver.o : solver.hpp
 
