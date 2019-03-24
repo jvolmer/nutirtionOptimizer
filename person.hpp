@@ -7,11 +7,13 @@ class Person{
 
 private:
     std::string m_name;
-    Food m_foodMinimum;
+    std::vector<double> m_nutritionMinimum;
 
 public:
-    Person(std::string name);
-    Person(std::string name, const Food& foodMinimum);
+    Person(const std::string& name);
+    Person(const std::string& name, const std::vector<double>& nutritionMinimum);
+
+    const std::vector<double>& getNutritionMinima() const {return m_nutritionMinimum;}
 };
 
 #endif

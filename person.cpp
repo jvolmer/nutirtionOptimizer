@@ -1,13 +1,12 @@
 #include "person.hpp"
 
-Person::Person(std::string name):
-    m_name {name},
-    m_foodMinimum {"foodMinimum"}
+Person::Person(const std::string& name):
+    m_name {name}
 {
 }
 
-Person::Person(std::string name, const Food& foodMinimum):
+Person::Person(const std::string& name, const std::vector<double>& nutritionMinimum):
     m_name {name},
-    m_foodMinimum {foodMinimum}
+    m_nutritionMinimum {nutritionMinimum}
 {
 }
