@@ -14,6 +14,8 @@ public:
     Person(const std::string& name, const std::vector<double>& nutritionMinimum);
 
     const std::vector<double>& getNutritionMinima() const {return m_nutritionMinimum;}
+
+    void setNutritionMinima(const std::vector<double>& nutrition){m_nutritionMinimum = nutrition;}
 };
 
 #endif

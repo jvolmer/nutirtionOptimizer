@@ -24,7 +24,10 @@ public:
     double getMax() const { return m_max; }
     const std::vector<double>& getNutritionValues() const { return m_nutritionValues; }
     double getCost() const { return m_cost; }
-    void setAmount(double amount){ m_amount = amount; } 
+    double getAmount() const { return m_amount; }
+    
+    void setAmount(double amount){ m_amount = amount; }
+    void printAmount() const;
 };
 
 

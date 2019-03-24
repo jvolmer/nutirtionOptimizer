@@ -19,4 +19,23 @@ BOOST_AUTO_TEST_CASE( addFood )
     BOOST_CHECK(testFoodOut == testFoodIn);
 }
 
+BOOST_AUTO_TEST_CASE( computeFoodPlan )
+{
+    Store store("Kueche");
+    store.addFood({"Eiweiss", {1, 0, 0}, 0, 1000});
+    store.addFood({"MUFA", {0, 1, 0}, 0, 1000});
+    store.addFood({"Eicosapentaensaeure", {0, 0, 1}, 0, 1000});
+ 
+    Person julia("Julia");
+    julia.setNutritionMinima({1, 1, 1});
+
+    store.computeFoodPlan(julia);
+
+    std::vector<double> expectedValue{1, 1, 1};
+
+    const std::vector<Food>& foodVec = store.getFood();
+    for (unsigned i=0;i < foodVec.size(); i++)
+        BOOST_TEST( foodVec[i].getAmount() == expectedValue[i] );
+}
+
 BOOST_AUTO_TEST_SUITE_END( )

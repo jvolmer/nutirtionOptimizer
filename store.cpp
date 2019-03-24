@@ -12,8 +12,7 @@ void Store::computeFoodPlan(const Person& person)
     
     for (const Food& food : m_food)
     {
-        double cost = food.getCost();
-        solver.addProblemCoefficient(cost);
+        solver.addProblemCoefficient(food.getCost());
         solver.addConstraintCoefficients(food.getNutritionValues());
         solver.addStructuralBound({GLP_DB, food.getMin(), food.getMax()});
     }
