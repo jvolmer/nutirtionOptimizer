@@ -22,12 +22,10 @@ double GnuLinearBound::getUpper()
     return m_upper;
 }
 
-GnuLinearSolver::GnuLinearSolver(std::string& name, int problemType):
+GnuLinearSolver::GnuLinearSolver(int problemType):
     m_problemObject {glp_create_prob()},
-    m_name{name},
     m_problemType {problemType}
 {
-    glp_set_prob_name(m_problemObject, m_name.c_str());
     glp_set_obj_dir(m_problemObject, m_problemType);
 }
 
@@ -61,9 +59,9 @@ const std::vector<double>& GnuLinearSolver::getResultVariables()
     return m_resultVariable;
 }
 
-double GnuLinearSolver::getResultProblemValue()
+double GnuLinearSolver::getResultValue()
 {
-    return m_resultProblemValue;
+    return m_resultValue;
 }
 
 void GnuLinearSolver::prepare()
@@ -73,17 +71,11 @@ void GnuLinearSolver::prepare()
 
     for (unsigned i=0; i<m_auxiliaryBound.size(); i++)
     {
-        char variableName[50];
-        sprintf(variableName, "AuxiliaryVariable%d", i+1);
-        glp_set_row_name(m_problemObject, i+1, variableName);
         glp_set_row_bnds(m_problemObject, i+1, m_auxiliaryBound[i].getType(), m_auxiliaryBound[i].getLower(), m_auxiliaryBound[i].getUpper());
     }
     
     for (unsigned i=0; i<m_structuralBound.size(); i++)
     {    
-        char variableName[50];
-        sprintf(variableName, "StructuralVariable%d", i+1);
-        glp_set_col_name(m_problemObject, i+1, variableName);
         glp_set_col_bnds(m_problemObject, i+1, m_structuralBound[i].getType(), m_structuralBound[i].getLower(), m_structuralBound[i].getUpper());
         glp_set_obj_coef(m_problemObject, i+1, m_problemCoefficient[i]);
     }
@@ -105,7 +97,7 @@ void GnuLinearSolver::prepare()
 void GnuLinearSolver::solve()
 {
     glp_simplex(m_problemObject, NULL);
-    m_resultProblemValue = glp_get_obj_val(m_problemObject);
+    m_resultValue = glp_get_obj_val(m_problemObject);
     for (unsigned i=0; i<m_structuralBound.size(); i++)
         m_resultVariable.push_back(glp_get_col_prim(m_problemObject, i+1));
 }
