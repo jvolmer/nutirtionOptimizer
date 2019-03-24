@@ -13,9 +13,9 @@ private:
 
 public:
     GnuLinearBound(int type, double lower, double upper);
-    int getType();
-    double getLower();
-    double getUpper();
+    int getType() const {return m_type;}
+    double getLower() const {return m_lower;}
+    double getUpper() const {return m_upper;}
 };
 
 class GnuLinearSolver{
@@ -33,12 +33,14 @@ private:
 public:
     GnuLinearSolver(int problemType);
     ~GnuLinearSolver();
-    void addProblemCoefficient(double coefficient);
-    void addConstraintCoefficients(const std::vector<double>& coefficients);
-    void addAuxiliaryBound(const GnuLinearBound& bound);
-    void addStructuralBound(const GnuLinearBound& bound);
-    const std::vector<double>& getResultVariables();
-    double getResultValue();
+
+    const std::vector<double>& getResultVariables() const {return m_resultVariable;}
+    double getResultValue() const {return m_resultValue;}
+
+    void addProblemCoefficient(double coefficient){m_problemCoefficient.push_back(coefficient);}
+    void addConstraintCoefficients(const std::vector<double>& coefficients){m_constraintCoefficient.push_back(coefficients);}
+    void addAuxiliaryBound(const GnuLinearBound& bound){m_auxiliaryBound.push_back(bound);}
+    void addStructuralBound(const GnuLinearBound& bound){m_structuralBound.push_back(bound);}
 
     void prepare();
     void solve();

@@ -7,21 +7,6 @@ GnuLinearBound::GnuLinearBound(int type, double lower, double upper):
 {
 }
 
-int GnuLinearBound::getType()
-{
-    return m_type;
-}
-
-double GnuLinearBound::getLower()
-{
-    return m_lower;
-}
-
-double GnuLinearBound::getUpper()
-{
-    return m_upper;
-}
-
 GnuLinearSolver::GnuLinearSolver(int problemType):
     m_problemObject {glp_create_prob()},
     m_problemType {problemType}
@@ -32,36 +17,6 @@ GnuLinearSolver::GnuLinearSolver(int problemType):
 GnuLinearSolver::~GnuLinearSolver()
 {
     glp_delete_prob(m_problemObject);
-}
-
-void GnuLinearSolver::addProblemCoefficient(double coefficient)
-{
-    m_problemCoefficient.push_back(coefficient);
-}
-
-void GnuLinearSolver::addConstraintCoefficients(const std::vector<double>& coefficients)
-{
-    m_constraintCoefficient.push_back(coefficients);
-}
-
-void GnuLinearSolver::addAuxiliaryBound(const GnuLinearBound& bound)
-{
-    m_auxiliaryBound.push_back(bound);
-}
-
-void GnuLinearSolver::addStructuralBound(const GnuLinearBound& bound)
-{
-    m_structuralBound.push_back(bound);
-}
-
-const std::vector<double>& GnuLinearSolver::getResultVariables()
-{
-    return m_resultVariable;
-}
-
-double GnuLinearSolver::getResultValue()
-{
-    return m_resultValue;
 }
 
 void GnuLinearSolver::prepare()
@@ -87,7 +42,7 @@ void GnuLinearSolver::prepare()
     {
         for (unsigned iStruc=0; iStruc<m_structuralBound.size(); iStruc++)
         {
-            ia[iGes+1] = iAux+1, ja[iGes+1] = iStruc+1, ar[iGes+1] = m_constraintCoefficient[iAux][iStruc];
+            ia[iGes+1] = iAux+1, ja[iGes+1] = iStruc+1, ar[iGes+1] = m_constraintCoefficient[iStruc][iAux];
             iGes++;
         }
     }

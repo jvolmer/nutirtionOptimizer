@@ -11,8 +11,8 @@ BOOST_AUTO_TEST_CASE( solveSystem, * boost::unit_test::tolerance(1e-10))
 
     solver.addProblemCoefficient(0.6);
     solver.addProblemCoefficient(0.5);
-    solver.addConstraintCoefficients({1., 2.});
-    solver.addConstraintCoefficients({3., 1.});
+    solver.addConstraintCoefficients({1., 3.});
+    solver.addConstraintCoefficients({2., 1.});
     
     solver.addAuxiliaryBound({GLP_UP, 0., 1.});
     solver.addAuxiliaryBound({GLP_UP, 0., 2.});
