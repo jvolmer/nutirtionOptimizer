@@ -1,13 +1,13 @@
 CXX      = g++
 CXXFLAGS = -Wall -std=c++11
-LDFLAGS  = -lm 
+LDFLAGS  = -lm -lglpk
 LDFLAGSTEST = -lboost_unit_test_framework
 
 TARGETS = main.x
-OBJECTS = food.o store.o person.o
+OBJECTS = food.o store.o person.o solver.o
 
-TESTS = food.test store.test person.test
-TESTOBJECTS = food_test.o store_test.o person_test.o
+TESTS = food.test store.test person.test solver.test
+TESTOBJECTS = food_test.o store_test.o person_test.o solver_test.o
 
 all: $(TARGETS)
 
@@ -46,11 +46,13 @@ person.test : person_test.o person.o food.o
 food_test.o : food.hpp
 store_test.o : store.hpp food.hpp
 person_test.o : person.hpp food.hpp
+solver_test.o : solver.hpp
 
 # create objects
 food.o : food.hpp
 store.o : store.hpp food.hpp
 person.o : person.hpp food.hpp
+solver.o : solver.hpp
 
 clean : 
 	rm -f *.x *.o *.test
