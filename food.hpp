@@ -18,6 +18,7 @@ public:
     Food(const std::string& name, const std::vector<double>& nutritions, double min=0, double max=0, double cost=.5);
     // Food(std::string foodString);
     friend bool operator== (const Food& lhs, const Food& rhs);
+    friend std::ostream& operator<< (std::ostream &out, const Food& food);
 
     std::string getName() const { return m_name; }
     double getMin() const { return m_min; }

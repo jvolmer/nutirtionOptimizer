@@ -30,13 +30,22 @@ Food::Food(const std::string& name, double min, double max, double cost):
     }
 }
 
-bool operator== (const Food& lhs, const Food& rhs)
-{
-    bool out = ( (lhs.m_name == rhs.m_name) && (lhs.m_min == rhs.m_min) && (lhs.m_max == rhs.m_max) && (lhs.m_nutritionValues == rhs.m_nutritionValues) );
-    return out;
-}
-
 void Food::printAmount() const
 {
     std::cout << m_name << "\t\t" << m_amount << " g" << std::endl;
+}
+
+bool operator== (const Food& lhs, const Food& rhs)
+{
+    bool out = ( (lhs.m_name == rhs.m_name) && (lhs.m_nutritionValues == rhs.m_nutritionValues) );
+    return out;
+}
+
+std::ostream& operator<< (std::ostream &out, const Food& food)
+{
+    out << food.m_name << ": ( ";
+    for(auto const& nutrition : food.m_nutritionValues)
+        out << nutrition << " ";
+    out << ")";
+    return out;
 }
