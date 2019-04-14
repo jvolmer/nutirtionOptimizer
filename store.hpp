@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 #include "food.hpp"
-#include "person.hpp"
-#include "solver.hpp"
 
 class Stock{
 
@@ -14,7 +12,6 @@ public:
     virtual std::string getLocation() const = 0;
     virtual const std::vector<Food>& getAllGoods() const = 0;
     virtual void addGood(const Food& food) = 0;
-    // virtual void computeFoodPlan(const User& person) = 0;
 };
 
 class Store : public Stock {
@@ -33,8 +30,6 @@ public:
 
     void addGood(const Food& food){ m_food.push_back(food); }
     
-    // void computeFoodPlan(const NutritionDemandingUser& person);
-
     // void readFoodString();
     // void read();
     // void write();
