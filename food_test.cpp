@@ -6,6 +6,12 @@
 
 BOOST_AUTO_TEST_SUITE (initialize_food)
 
+BOOST_AUTO_TEST_CASE( initializeWithoutInput )
+{
+    Food testFood;
+    BOOST_TEST( testFood.getName() == "");
+}
+
 BOOST_AUTO_TEST_CASE( initializeWithName )
 {
     std::string testName{"banane"};

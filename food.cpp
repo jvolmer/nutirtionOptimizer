@@ -1,6 +1,14 @@
 #include <iostream>
 #include "food.hpp"
 
+Food::Food():
+    m_name {""},
+    m_min {0},
+    m_max {0},
+    m_cost {0}
+{
+}
+
 Food::Food(const std::string& name, const std::vector<double>& nutritions, double min, double max, double cost):
     m_name {name},
     m_nutritionValues {nutritions},
