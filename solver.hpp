@@ -4,8 +4,18 @@
 #include <string>
 #include <glpk.h>
 
-class GnuLinearBound{
+class Bound
+{
+public:
+    virtual ~Bound() {};
+    virtual int getType() const = 0;
+    virtual double getLower() const = 0;
+    virtual double getUpper() const = 0;
+    
+};
 
+class GnuLinearBound : public Bound
+{
 private:
     int m_type;
     double m_lower;
@@ -18,8 +28,27 @@ public:
     double getUpper() const {return m_upper;}
 };
 
-class GnuLinearSolver{
+
+class Solver
+{
+public:
+    virtual ~Solver() {};
+    virtual const std::vector<double>& getResultVariables() const = 0;
+    virtual double getResultValue() const = 0;
     
+    virtual void addProblemCoefficient(double coefficient) = 0;
+    virtual void addConstraintCoefficients(const std::vector<double>& coefficients) = 0;
+    virtual void addAuxiliaryBound(const GnuLinearBound& bound) = 0;
+    virtual void addStructuralBound(const GnuLinearBound& bound) = 0;
+
+    virtual void prepareStructuralVariables() = 0;
+    virtual void prepareAuxiliaryVariables() = 0;
+    virtual void solve() = 0;
+
+};
+
+class GnuLinearSolver : public Solver
+{    
 private:
     glp_prob* m_problemObject;
     int m_problemType;
@@ -31,7 +60,7 @@ private:
     double m_resultValue;
 
 public:
-    GnuLinearSolver(int problemType);
+    GnuLinearSolver(int problemType, std::vector<double> problemCoefficient = {}, std::vector<std::vector<double>> constraintCoefficient = {}, std::vector<GnuLinearBound> auxiliaryBound = {}, std::vector<GnuLinearBound> structuralBound = {});
     ~GnuLinearSolver();
 
     const std::vector<double>& getResultVariables() const {return m_resultVariable;}
@@ -42,7 +71,8 @@ public:
     void addAuxiliaryBound(const GnuLinearBound& bound){m_auxiliaryBound.push_back(bound);}
     void addStructuralBound(const GnuLinearBound& bound){m_structuralBound.push_back(bound);}
 
-    void prepare();
+    void prepareStructuralVariables();
+    void prepareAuxiliaryVariables();
     void solve();
 
 };
