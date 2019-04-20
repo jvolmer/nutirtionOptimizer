@@ -3,32 +3,103 @@
 #include <boost/test/unit_test.hpp>
 #include "solver.hpp"
 
-BOOST_AUTO_TEST_SUITE( solvertest )
-
-BOOST_AUTO_TEST_CASE( solveSystem, * boost::unit_test::tolerance(1e-10))
+struct fixture
 {
-    GnuLinearSolver solver(GLP_MAX);
+    std::vector<double> expectedVariable;
+    double expectedValue;
+    const std::vector<double>* actualVariableAddress;
+    double actualValue;
 
-    solver.addProblemCoefficient(0.6);
-    solver.addProblemCoefficient(0.5);
-    solver.addConstraintCoefficients({1., 3.});
-    solver.addConstraintCoefficients({2., 1.});
+    void solve(GnuLinearSolver& solver)
+    {
+        solver.prepareStructuralVariables();
+        solver.prepareAuxiliaryVariables();
+        solver.solve();
+        actualVariableAddress = &(solver.getResultVariables());
+        actualValue = solver.getResultValue();
+    }
     
-    solver.addAuxiliaryBound({GLP_UP, 0., 1.});
-    solver.addAuxiliaryBound({GLP_UP, 0., 2.});
-    solver.addStructuralBound({GLP_LO, 0., 0.});
-    solver.addStructuralBound({GLP_LO, 0., 0.});
+    void verifyExpectedResults(const std::vector<double>& variableCoefficient)
+    {
+        expectedValue = variableCoefficient[0] * expectedVariable[0] + variableCoefficient[1] * expectedVariable[1];
 
-    solver.prepare();
-    solver.solve();
-    double solverValue =solver.getResultValue();
-    const std::vector<double>& solverVariable = solver.getResultVariables();
+        BOOST_TEST( expectedVariable == *actualVariableAddress, boost::test_tools::per_element());
+        BOOST_TEST( expectedValue == actualValue );
+    }
+};
+
+BOOST_FIXTURE_TEST_SUITE( solvertest, fixture )
+
+BOOST_AUTO_TEST_CASE( minimizationWithOneVariableAndNoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
+{
+    double xCoefficient = 2;
+    std::vector<double> variableCoefficient{xCoefficient};
+    double xLowerBound = 1;    
+    std::vector<GnuLinearBound> constraintBound{{GLP_LO, xLowerBound, 0.}};
+
+    std::vector<std::vector<double>> constraintCoefficient{{1}};
+    std::vector<GnuLinearBound> variableBound{{GLP_LO, xLowerBound, 0}};
+
+    GnuLinearSolver solver(GLP_MIN, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+
+    solve(solver);
+
+    expectedVariable = {xLowerBound};
+
+    verifyExpectedResults(variableCoefficient);
+}
+
+BOOST_AUTO_TEST_CASE( maximizationWithOneVariableAndNoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
+{
+    double xCoefficient = 2;
+    std::vector<double> variableCoefficient{xCoefficient};
+    double xUpperBound = 10;
+    std::vector<GnuLinearBound> constraintBound{{GLP_UP, 0, xUpperBound}};
+
+    std::vector<std::vector<double>> constraintCoefficient{{1}};
+    std::vector<GnuLinearBound> variableBound{{GLP_UP, 0, xUpperBound}};
+
+    GnuLinearSolver solver(GLP_MAX, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+
+    solve(solver);
+
+    expectedVariable = {xUpperBound};
+
+    verifyExpectedResults(variableCoefficient);
+}
+
+BOOST_AUTO_TEST_CASE( minimizationWithTwoVariablesAndOneAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
+{
     
-    double expectedValue{0.46};
-    std::vector<double> expectedVariable{0.6, 0.2};
+    std::vector<double> variableCoefficient{1, 1};
+    std::vector<std::vector<double>> constraintCoefficient{{1, 2}};
+    std::vector<GnuLinearBound> constraintBound{{GLP_LO, 1, 0.}};
+    std::vector<GnuLinearBound> variableBound{{GLP_LO, 0, 0}, {GLP_LO, 0, 0}};
 
-    BOOST_TEST( expectedVariable == solverVariable, boost::test_tools::per_element());
-    BOOST_TEST( expectedValue == solverValue );
+    GnuLinearSolver solver(GLP_MIN, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+
+    solve(solver);
+
+    expectedVariable = {0, .5};
+
+    verifyExpectedResults(variableCoefficient);
+}
+
+BOOST_AUTO_TEST_CASE( maximizationWithTwoVariablesAndTwoAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
+{
+    std::vector<double> variableCoefficient{.6, .5};
+    std::vector<std::vector<double>> constraintCoefficient{{1, 2}, {3, 1}};
+    std::vector<GnuLinearBound> constraintBound{{GLP_UP, 0, 1}, {GLP_UP, 0, 2}};
+    std::vector<GnuLinearBound> variableBound{{GLP_LO, 0, 0}, {GLP_LO, 0, 0}};
+
+    GnuLinearSolver solver(GLP_MAX, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+
+    solve(solver);
+
+    expectedVariable = {.6, .2};
+
+    verifyExpectedResults(variableCoefficient);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END( )
