@@ -14,15 +14,15 @@ BOOST_AUTO_TEST_CASE( test )
 
 BOOST_AUTO_TEST_CASE( computeFoodPlan )
 {
-    Stock *store = new Store{"Kueche"};
+    auto store = std::make_shared<FoodStore>("Kueche");
     store->addGood({"Eiweiss", {1, 0, 0}, 0, 1000});
     store->addGood({"MUFA", {0, 1, 0}, 0, 1000});
     store->addGood({"Eicosapentaensaeure", {0, 0, 1}, 0, 1000});
  
-    User *julia = new NutritionDemandingUser{"Julia"};
+    auto julia = std::make_shared<NutritionDemandingUser>("Julia");
     julia->setNutritionMinima({1, 1, 1});
 
-    Solver *solver = new GnuLinearSolver(GLP_MIN);
+    auto solver = std::make_shared<GnuLinearSolver>(GLP_MIN);
     
     Analyzer analyzer(store, julia, solver);
     analyzer.computeFoodPlan();
