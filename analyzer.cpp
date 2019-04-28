@@ -21,8 +21,7 @@ void Analyzer::computeFoodPlan()
     for (double nutrition : nutritionMinima)
         m_solver->addAuxiliaryBound({GLP_LO, nutrition, 0.});
 
-    m_solver->prepareStructuralVariables();
-    m_solver->prepareAuxiliaryVariables();
+    m_solver->prepare();
     m_solver->solve();
     const std::vector<double>& results = m_solver->getResultVariables();
 

@@ -41,8 +41,7 @@ public:
     virtual void addAuxiliaryBound(const GnuLinearBound& bound) = 0;
     virtual void addStructuralBound(const GnuLinearBound& bound) = 0;
 
-    virtual void prepareStructuralVariables() = 0;
-    virtual void prepareAuxiliaryVariables() = 0;
+    virtual void prepare() = 0;
     virtual void solve() = 0;
 
 };
@@ -73,6 +72,8 @@ public:
 
     void prepareStructuralVariables();
     void prepareAuxiliaryVariables();
+    void prepare();
+    
     void solve();
 
 };
@@ -94,8 +95,7 @@ public:
     void addAuxiliaryBound(const GnuLinearBound& bound){};
     void addStructuralBound(const GnuLinearBound& bound){};
 
-    void prepareStructuralVariables(){};
-    void prepareAuxiliaryVariables(){};
+    void prepare(){};
     void solve(){};
 };
 

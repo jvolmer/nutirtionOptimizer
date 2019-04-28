@@ -12,8 +12,7 @@ struct fixture
 
     void solve(GnuLinearSolver& solver)
     {
-        solver.prepareStructuralVariables();
-        solver.prepareAuxiliaryVariables();
+        solver.prepare();
         solver.solve();
         actualVariableAddress = &(solver.getResultVariables());
         actualValue = solver.getResultValue();

@@ -28,6 +28,12 @@ GnuLinearSolver::~GnuLinearSolver()
     glp_delete_prob(m_problemObject);
 }
 
+void GnuLinearSolver::prepare()
+{
+    prepareStructuralVariables();
+    prepareAuxiliaryVariables();
+}
+
 void GnuLinearSolver::prepareStructuralVariables()
 {
     glp_add_cols(m_problemObject, m_structuralBound.size());
