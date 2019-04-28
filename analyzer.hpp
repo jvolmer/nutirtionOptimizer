@@ -1,24 +1,22 @@
 #ifndef ANALYZER_H
 #define ANALYZER_H
+#include <memory>
 #include "store.hpp"
 #include "person.hpp"
 #include "solver.hpp"
 #include "food.hpp"
 
-template <class T>
 class Analyzer{
 
 private:
-    const Stock<T>* m_store;
-    const User* m_person;
-    Solver* m_solver;
+    std::shared_ptr<Stock> m_store;
+    std::shared_ptr<User> m_person;
+    std::shared_ptr<Solver> m_solver;
     std::vector<double> m_goodAmount;
 
 public:
-    Analyzer(const Stock<T>* store, const User* person, Solver* solver);
-    // Analyzer(const Stock<T>* store, const User* person);
-    Analyzer(const Stock<T>* store) {};
-    Analyzer(const User* person);
+    Analyzer(std::shared_ptr<Stock> store, std::shared_ptr<User> person, std::shared_ptr<Solver> solver);
+    Analyzer(std::shared_ptr<Stock> store) {};
     Analyzer() {};
     ~Analyzer() {};
 
@@ -28,13 +26,3 @@ public:
 
 
 #endif
-
-
-template <class T>
-Analyzer<T>::Analyzer(const Stock<T>* store, const User* person, Solver* solver):
-    m_store{store},
-    m_person{person},
-    m_solver{solver}
-{
-}
-
