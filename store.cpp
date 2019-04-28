@@ -6,6 +6,3 @@ Store::Store(const std::string& name, const std::string& location):
 {
 }
 
-// void Store::computeFoodPlan(const NutritionDemandingUser& person)
-// {
-// }
