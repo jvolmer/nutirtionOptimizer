@@ -77,4 +77,26 @@ public:
 
 };
 
+class MockSolver : public Solver
+{
+private:
+    std::vector<double> results;
+    
+public:
+    MockSolver() {};
+    ~MockSolver() {};
+
+    const std::vector<double>& getResultVariables() const {return results;}
+    double getResultValue() const {return 0;}
+    
+    void addProblemCoefficient(double coefficient){ results.push_back(1);}
+    void addConstraintCoefficients(const std::vector<double>& coefficients){};
+    void addAuxiliaryBound(const GnuLinearBound& bound){};
+    void addStructuralBound(const GnuLinearBound& bound){};
+
+    void prepareStructuralVariables(){};
+    void prepareAuxiliaryVariables(){};
+    void solve(){};
+};
+
 #endif

@@ -52,5 +52,25 @@ public:
     void printAmount() const;
 };
 
+class MockGood : public Good{
+
+private:
+    std::vector<double> m_nutritionValues{};
+public:
+    MockGood() {};
+    ~MockGood() {};
+    
+    std::string getName() const {return "";}
+    double getMin() const {return 0;}
+    double getMax() const {return 0;}
+    const std::vector<double>& getNutritionValues() const {return m_nutritionValues;}
+    double getCost() const {return 0;}
+    double getAmount() const {return 0;}
+
+    void setName(const std::string& name) {};
+    void setAmount(double amount) {};
+    void printAmount() const {};
+    
+};
 
 #endif
