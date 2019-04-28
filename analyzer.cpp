@@ -1,6 +1,6 @@
 #include "analyzer.hpp"
 
-Analyzer::Analyzer(std::shared_ptr<Stock> store, std::shared_ptr<User> person, std::shared_ptr<Solver> solver):
+Analyzer::Analyzer(std::shared_ptr<Store> store, std::shared_ptr<User> person, std::shared_ptr<Solver> solver):
     m_store{store},
     m_person{person},
     m_solver{solver}

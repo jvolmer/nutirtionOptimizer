@@ -10,19 +10,19 @@
 BOOST_AUTO_TEST_SUITE( analyzertest )
 
 BOOST_AUTO_TEST_CASE( testCallToSolver )
-{
-    auto solver = std::make_shared<MockSolver>();
-    auto stock = std::make_shared<MockStock>();
-    auto user = std::make_shared<MockUser>();
-    
-    stock->addGood({"PureNutrition1", {1, 0, 0}, 0, 100, .5});
-    stock->addGood({"PureNutrition2", {0, 1, 0}, 0, 100, .2});
+{    
+    auto store = std::make_shared<MockStore>();
+    store->addGood({"PureNutrition1", {1, 0, 0}, 0, 100, .5});
+    store->addGood({"PureNutrition2", {0, 1, 0}, 0, 100, .2});
 
-    Analyzer analyzer(stock, user, solver);
+    auto user = std::make_shared<MockUser>();
+    auto solver = std::make_shared<MockSolver>();
+
+    Analyzer analyzer(store, user, solver);
     analyzer.computeFoodPlan();
 
     std::vector<double> expectedAmount;
-    for (const Food& food : stock->getAllGoods())
+    for (const Food& food : store->getAllGoods())
         expectedAmount.push_back(food.getCost());
 
     const std::vector<double>& actualAmount = analyzer.getAmounts();

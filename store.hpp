@@ -4,17 +4,17 @@
 #include <vector>
 #include "food.hpp"
 
-class Stock{
+class Store{
 
 public:
-    virtual ~Stock() {};
+    virtual ~Store() {};
     virtual std::string getName() const = 0;
     virtual std::string getLocation() const = 0;
     virtual const std::vector<Food>& getAllGoods() const = 0;
     virtual void addGood(const Food& good) = 0;
 };
 
-class Store : public Stock {
+class FoodStore : public Store {
 
 private:
     std::string m_name;
@@ -22,7 +22,7 @@ private:
     std::string m_location;
 
 public:
-    Store(const std::string& name, const std::string& location="");
+    FoodStore(const std::string& name, const std::string& location="");
 
     std::string getName() const { return m_name; }
     std::string getLocation() const { return m_location; }
@@ -35,14 +35,14 @@ public:
     // void write();
 };
 
-class MockStock : public Stock{
+class MockStore : public Store{
 
 private:
     std::vector<Food> m_good;
     
 public:
-    MockStock() {};
-    ~MockStock() {};
+    MockStore() {};
+    ~MockStore() {};
     
     std::string getName() const { return ""; };
     std::string getLocation() const { return ""; };

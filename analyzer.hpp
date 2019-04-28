@@ -9,14 +9,14 @@
 class Analyzer{
 
 private:
-    std::shared_ptr<Stock> m_store;
+    std::shared_ptr<Store> m_store;
     std::shared_ptr<User> m_person;
     std::shared_ptr<Solver> m_solver;
     std::vector<double> m_goodAmount;
 
 public:
-    Analyzer(std::shared_ptr<Stock> store, std::shared_ptr<User> person, std::shared_ptr<Solver> solver);
-    Analyzer(std::shared_ptr<Stock> store) {};
+    Analyzer(std::shared_ptr<Store> store, std::shared_ptr<User> person, std::shared_ptr<Solver> solver);
+    Analyzer(std::shared_ptr<Store> store) {};
     Analyzer() {};
     ~Analyzer() {};
 

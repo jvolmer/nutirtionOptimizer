@@ -10,7 +10,7 @@ BOOST_AUTO_TEST_CASE( addOneFood )
 {
     Food testFoodIn{"test"};
     
-    Store newStore{"kueche"};
+    FoodStore newStore{"kueche"};
     newStore.addGood(testFoodIn);
     const std::vector<Food>& foodVector = newStore.getAllGoods();
     const Food& testFoodOut = foodVector.back();
@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_CASE( addTwoFoods )
     Food testFoodIn1{"test1"};
     Food testFoodIn2{"test2"};
     
-    Store newStore{"kueche"};
+    FoodStore newStore{"kueche"};
     newStore.addGood(testFoodIn1);
     newStore.addGood(testFoodIn2);
     const std::vector<Food>& foodVector = newStore.getAllGoods();
