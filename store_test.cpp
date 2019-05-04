@@ -39,14 +39,26 @@ BOOST_AUTO_TEST_CASE( addTwoFoods )
 
 BOOST_AUTO_TEST_CASE( testReadAndWrite )
 {
-    FoodStore store{"testStore", "test.out"};
-
+    // create store
+    FoodStore store{"testStore"};
     Food foodIn{"testFood", {3.221, 4.3, 9.99992}, 4.3, 999.91};
     store.addGood(std::move(foodIn));
-    store.write();
 
+    // write store to file
+    std::ofstream fileIn("test.out");
+    fileIn << store.toJson();
+    fileIn.close();
+
+    // clear store
     store.clearFood();
-    store.read();
+
+    //read store from file
+    std::ifstream fileOut("test.out");    
+    Json::Value fileContent;
+    fileOut >> fileContent;
+    store.readFromJson(fileContent);
+
+    // test
     const std::vector<Food>& foodVector = store.getAllGoods();    
     const Food& foodOut = foodVector.back();
 

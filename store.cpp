@@ -6,14 +6,13 @@ FoodStore::FoodStore(const std::string& name, const std::string& location):
 {
 }
 
-void FoodStore::read()
+void FoodStore::readFromJson(const Json::Value& storeObj)
 {
-    std::ifstream infile(m_location);
+    m_name = storeObj["name"].asString();
 
-    Json::Value fileContent;
-    infile >> fileContent;
-
-    for (const Json::Value& foodObj : fileContent)
+    clearFood();
+    const Json::Value& foods = storeObj["foods"];
+    for (const Json::Value& foodObj : foods)
     {
         Food food;
         food.readFromJson(foodObj);
@@ -21,14 +20,15 @@ void FoodStore::read()
     }
 }
 
-void FoodStore::write()
+Json::Value FoodStore::toJson() const
 {
-    std::ofstream outfile(m_location);
-
-    Json::Value input;
-    
+    Json::Value foods;
     for (const Food& food : m_food)
-        input.append(food.toJson());
+        foods.append(food.toJson());
+    
+    Json::Value storeObj;
+    storeObj["name"] = m_name;
+    storeObj["foods"] = foods;
 
-    outfile << input;
+    return storeObj;
 }

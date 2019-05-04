@@ -15,8 +15,9 @@ public:
     virtual std::string getLocation() const = 0;
     virtual const std::vector<Food>& getAllGoods() const = 0;
     virtual void addGood(const Food& good) = 0;
-    virtual void read() = 0;
-    virtual void write() = 0;
+
+    virtual void readFromJson(const Json::Value& storeObj) = 0;
+    virtual Json::Value toJson() const = 0;
 };
 
 class FoodStore : public Store {
@@ -35,9 +36,9 @@ public:
 
     void addGood(const Food& food){ m_food.push_back(food); }
     void clearFood(){ m_food.clear(); }
-    
-    void read();
-    void write();
+
+    void readFromJson(const Json::Value& storeObj);
+    Json::Value toJson() const;
 };
 
 class MockStore : public Store{
@@ -54,8 +55,8 @@ public:
     const std::vector<Food>& getAllGoods() const { return m_good; }
     void addGood(const Food& good) { m_good.push_back(good); }
 
-    void read() {};
-    void write() {};
+    void readFromJson(const Json::Value& storeObj) {};
+    Json::Value toJson() const { return Json::Value{}; };
 };
 
 
