@@ -1,7 +1,7 @@
 CXX      = g++
 CXXFLAGS = -Wall -std=c++14
 #-Wno-deprecated-declarations
-LDFLAGS  = -lm -lglpk
+LDFLAGS  = -lm -lglpk -ljsoncpp
 LDFLAGSTEST = -lboost_unit_test_framework
 # INCTEST = -I /home/jvolmer/bin/turtle_1.3.1/include
 

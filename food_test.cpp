@@ -2,6 +2,7 @@
 #define BOOST_TEST_MODULE foodtest
 #include <boost/test/unit_test.hpp>
 #include <string>
+#include <json/json.h>
 #include "food.hpp"
 
 BOOST_AUTO_TEST_SUITE (initialize_food)
@@ -27,7 +28,7 @@ BOOST_AUTO_TEST_CASE( initializeWithMinMax )
     std::string testName{"apfel"};
     double testMin{5.};
     double testMax{10.};
-    Food testFood{testName, testMin, testMax};
+    Food testFood{testName, {}, testMin, testMax};
     
     BOOST_TEST( testFood.getName() == testName );
     BOOST_TEST( testFood.getMin() == testMin );
@@ -48,7 +49,7 @@ BOOST_AUTO_TEST_CASE( checkMinMaxHierarchy )
 {
     double minIn{100.};
     double maxIn{50.};
-    Food testFood{"erdbeere", minIn, maxIn};
+    Food testFood{"erdbeere", {}, minIn, maxIn};
 
     BOOST_TEST( testFood.getMax() == minIn );
     BOOST_TEST( testFood.getMin() == maxIn );
@@ -81,9 +82,31 @@ BOOST_AUTO_TEST_CASE( compareFoodsWithDifferentNutritions )
 {
     std::vector<double> nutrition1 {1.2, 100, 204};
     std::vector<double> nutrition2 {1.3, 100, 204};
-    Food testFood1{"himbeere", nutrition1, 3, 2};
-    Food testFood2{"himbeere", nutrition2, 3, 2};
+    Food testFood1{"himbeere", std::move(nutrition1), 3, 2};
+    Food testFood2{"himbeere", std::move(nutrition2), 3, 2};
     BOOST_TEST( !(testFood1 == testFood2) );
+}
+
+BOOST_AUTO_TEST_SUITE_END( )
+
+
+BOOST_AUTO_TEST_SUITE( json )
+
+
+BOOST_AUTO_TEST_CASE( writeAndReadJson )
+{
+    std::string name = "moehre";
+    std::vector<double> nutrition {1.2, 100, 204};
+    double min = 4.332;
+    double max = 3.22;
+
+    Food foodIn{name, std::move(nutrition), min, max};
+    Json::Value foodObj = foodIn.toJson();
+    
+    Food foodOut;
+    foodOut.readFromJson(foodObj);
+
+    BOOST_TEST( foodOut == foodIn );
 }
 
 BOOST_AUTO_TEST_SUITE_END( )

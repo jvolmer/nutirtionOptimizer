@@ -2,6 +2,9 @@
 #define FOOD_H
 #include <string>
 #include <vector>
+#include <iostream>
+#include <json/json.h>
+#include "specialFunctions.hpp"
 
 class Good{
 
@@ -17,7 +20,9 @@ public:
     virtual void setName(const std::string& name) = 0;
     
     virtual void setAmount(double amount) = 0;
-    virtual void printAmount() const = 0;    
+    virtual void printAmount() const = 0;
+    virtual Json::Value toJson() const = 0;
+    virtual void readFromJson(const Json::Value& foodObj) = 0;
     
 };
 
@@ -32,10 +37,8 @@ private:
     double m_amount;
     
 public:
-    Food();
-    Food(const std::string& name, double min=0, double max=0, double cost=.5);
-    Food(const std::string& name, const std::vector<double>& nutritions, double min=0, double max=0, double cost=.5);
-    // Food(std::string foodString);
+    Food(const std::string& name="", const std::vector<double>& nutritions={}, double min=0, double max=0, double cost=.5);
+    
     friend bool operator== (const Food& lhs, const Food& rhs);
     friend std::ostream& operator<< (std::ostream &out, const Food& food);
 
@@ -50,6 +53,8 @@ public:
     
     void setAmount(double amount){ m_amount = amount; }
     void printAmount() const;
+    Json::Value toJson() const;
+    void readFromJson(const Json::Value& foodObj);
 };
 
 class MockGood : public Good{
@@ -70,7 +75,8 @@ public:
     void setName(const std::string& name) {};
     void setAmount(double amount) {};
     void printAmount() const {};
-    
+    Json::Value toJson() const {return Json::Value{};}
+    void readFromJson(const Json::Value& foodObj) {};
 };
 
 #endif
