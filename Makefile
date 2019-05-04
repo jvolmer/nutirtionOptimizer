@@ -32,7 +32,13 @@ main.x : main.o $(OBJECTS)
 	@./$@ #--log_level=test_suite
 	@echo 
 
-store.test : store_test.o store.o food.o
+food.test : food_test.o food.o specialFunctions.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
+	@echo Running $@
+	@./$@ #--log_level=test_suite
+	@echo 
+
+store.test : store_test.o store.o food.o specialFunctions.o
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
 	@echo Running $@
 	@./$@ #--log_level=test_suite
@@ -59,25 +65,22 @@ analyzer_integration.test : analyzer_integrationtest.o analyzer.o person.o store
 
 
 # create test objetcs
-food_test.o : food.hpp
-store_test.o : store.hpp food.hpp
-# $(CXX) $(CXXFLAGS) -c $< -o $@ $(INCTEST)
+food_test.o : food.hpp specialFunctions.hpp
+store_test.o : store.hpp food.hpp specialFunctions.hpp
 person_test.o : person.hpp
 solver_test.o : solver.hpp
-analyzer_integrationtest.o : analyzer.hpp store.hpp solver.hpp person.hpp food.hpp
-
-# $(CXX) $(CXXFLAGS) -c $< -o $@ $(INCTEST)
-
-analyzer_test.o : analyzer.hpp solver.hpp store.hpp person.hpp food.hpp
+analyzer_integrationtest.o : analyzer.hpp store.hpp solver.hpp person.hpp food.hpp specialFunctions.hpp
+analyzer_test.o : analyzer.hpp solver.hpp store.hpp person.hpp food.hpp specialFunctions.hpp
 
 # $(CXX) $(CXXFLAGS) -c $< -o $@ $(INCTEST)
 
 # create objects
-food.o : food.hpp
-store.o : store.hpp food.hpp
-person.o : person.hpp food.hpp
+food.o : food.hpp specialFunctions.hpp
+store.o : store.hpp food.hpp specialFunctions.hpp
+person.o : person.hpp food.hpp specialFunctions.hpp
 solver.o : solver.hpp
-analyzer.o : analyzer.hpp store.hpp person.hpp solver.hpp food.hpp
+analyzer.o : analyzer.hpp store.hpp person.hpp solver.hpp food.hpp spcecialFunctions.hpp
+specialFunctions.o : specialFunctions.hpp
 
 clean : 
 	rm -f *.x *.o *.test
