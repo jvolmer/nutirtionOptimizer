@@ -1,8 +1,8 @@
 #include "store.hpp"
 
-FoodStore::FoodStore(const std::string& name, const std::string& location):
+FoodStore::FoodStore(const std::string& name, const std::vector<Food>& foods):
     m_name {name},
-    m_location {location}
+    m_food {foods}
 {
 }
 
