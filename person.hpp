@@ -9,6 +9,8 @@ public:
     virtual ~User(){};
     virtual void setNutritionMinima(const std::vector<double>& nutrition) = 0;
     virtual const std::vector<double>& getNutritionMinima() const = 0;
+    virtual Json::Value toJson() const = 0;
+    virtual void readFromJson(const Json::Value& personObj) = 0;
 };
 
 class NutritionDemandingUser : public User
@@ -24,6 +26,9 @@ public:
     const std::vector<double>& getNutritionMinima() const {return m_nutritionMinimum;}
 
     void setNutritionMinima(const std::vector<double>& nutrition){m_nutritionMinimum = nutrition;}
+
+    Json::Value toJson() const;
+    void readFromJson(const Json::Value& personObj);
 };
 
 class MockUser : public User
@@ -37,6 +42,9 @@ public:
     
     void setNutritionMinima(const std::vector<double>& nutrition) {};
     const std::vector<double>& getNutritionMinima() const { return m_nutritionMinima; };
+
+    Json::Value toJson() const { return Json::Value{}; };
+    void readFromJson(const Json::Value& personObj) {};
 };
 
 #endif
