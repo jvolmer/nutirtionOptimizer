@@ -34,8 +34,8 @@ public:
     const std::vector<Food>& getAllGoods() const { return m_food; }
 
     void addGood(const Food& food){ m_food.push_back(food); }
+    void clearFood(){ m_food.clear(); }
     
-    // void readFoodString();
     void read();
     void write();
 };

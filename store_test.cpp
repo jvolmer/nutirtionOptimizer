@@ -39,15 +39,15 @@ BOOST_AUTO_TEST_CASE( addTwoFoods )
 
 BOOST_AUTO_TEST_CASE( testReadAndWrite )
 {
-    FoodStore store{"testIn", "test.out"};
+    FoodStore store{"testStore", "test.out"};
 
     Food foodIn{"testFood", {3.221, 4.3, 9.99992}, 4.3, 999.91};
     store.addGood(std::move(foodIn));
     store.write();
 
-    FoodStore newStore{"testOut", "test.out"};
-    newStore.read();
-    const std::vector<Food>& foodVector = newStore.getAllGoods();    
+    store.clearFood();
+    store.read();
+    const std::vector<Food>& foodVector = store.getAllGoods();    
     const Food& foodOut = foodVector.back();
 
     BOOST_TEST( foodVector.size() == 1 );
