@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE( testReadAndWrite )
     // create store
     FoodStore store{"testStore"};
     Food foodIn{"testFood", {3.221, 4.3, 9.99992}, 4.3, 999.91};
-    store.addGood(std::move(foodIn));
+    store.addGood(foodIn);
 
     // write store to file
     std::ofstream fileIn("test.out");

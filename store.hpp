@@ -3,7 +3,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <iostream>
 #include <json/json.h>
 #include "food.hpp"
 
@@ -13,8 +12,8 @@ public:
     virtual ~Store() {};
     virtual std::string getName() const = 0;
     virtual const std::vector<Food>& getAllGoods() const = 0;
-    virtual void addGood(const Food& good) = 0;
-
+    virtual void addGood(Food good) = 0;
+    
     virtual void readFromJson(const Json::Value& storeObj) = 0;
     virtual Json::Value toJson() const = 0;
 };
@@ -26,12 +25,12 @@ private:
     std::vector<Food> m_food;
 
 public:
-    FoodStore(const std::string& name, const std::vector<Food>& nutritions = {});
+    FoodStore(std::string name="", std::vector<Food> nutritions={});
 
     std::string getName() const { return m_name; }
     const std::vector<Food>& getAllGoods() const { return m_food; }
 
-    void addGood(const Food& food){ m_food.push_back(food); }
+    void addGood(Food food){ m_food.push_back(std::move(food)); }
     void clearFood(){ m_food.clear(); }
 
     void readFromJson(const Json::Value& storeObj);
@@ -49,8 +48,8 @@ public:
     
     std::string getName() const { return ""; };
     const std::vector<Food>& getAllGoods() const { return m_good; }
-    void addGood(const Food& good) { m_good.push_back(good); }
-
+    void addGood(Food good){ m_good.push_back(std::move(good)); };
+    
     void readFromJson(const Json::Value& storeObj) {};
     Json::Value toJson() const { return Json::Value{}; };
 };
