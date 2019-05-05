@@ -1,8 +1,8 @@
 #include "food.hpp"
 
-Food::Food(const std::string& name, const std::vector<double>& nutritions, double min, double max, double cost):
-    m_name {name},
-    m_nutritionValues {nutritions},
+Food::Food(std::string name, std::vector<double> nutritions, double min, double max, double cost):
+    m_name {std::move(name)},
+    m_nutritionValues {std::move(nutritions)},
     m_min {min},
     m_max {max},
     m_cost {cost}
@@ -14,7 +14,7 @@ Food::Food(const std::string& name, const std::vector<double>& nutritions, doubl
         m_max = tmp;
     }
 }
-
+    
 void Food::printAmount() const
 {
     std::cout << m_name << "\t\t" << m_amount << " g" << std::endl;
