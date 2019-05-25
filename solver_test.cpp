@@ -39,13 +39,13 @@ BOOST_AUTO_TEST_CASE( minimizationWithOneVariableAndNoAdditionalInequalityConstr
     std::vector<std::vector<double>> constraintCoefficient{{1}};
     std::vector<GnuLinearBound> variableBound{{GLP_LO, xLowerBound, 0}};
 
-    GnuLinearSolver solver(GLP_MIN, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+    GnuLinearSolver solver{GLP_MIN, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
 
     solve(solver);
 
     expectedVariable = {xLowerBound};
 
-    verifyExpectedResults(variableCoefficient);
+    verifyExpectedResults(std::move(variableCoefficient));
 }
 
 BOOST_AUTO_TEST_CASE( maximizationWithOneVariableAndNoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
@@ -58,13 +58,13 @@ BOOST_AUTO_TEST_CASE( maximizationWithOneVariableAndNoAdditionalInequalityConstr
     std::vector<std::vector<double>> constraintCoefficient{{1}};
     std::vector<GnuLinearBound> variableBound{{GLP_UP, 0, xUpperBound}};
 
-    GnuLinearSolver solver(GLP_MAX, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+    GnuLinearSolver solver{GLP_MAX, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
 
     solve(solver);
 
     expectedVariable = {xUpperBound};
 
-    verifyExpectedResults(variableCoefficient);
+    verifyExpectedResults(std::move(variableCoefficient));
 }
 
 BOOST_AUTO_TEST_CASE( minimizationWithTwoVariablesAndOneAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
@@ -75,13 +75,13 @@ BOOST_AUTO_TEST_CASE( minimizationWithTwoVariablesAndOneAdditionalInequalityCons
     std::vector<GnuLinearBound> constraintBound{{GLP_LO, 1, 0.}};
     std::vector<GnuLinearBound> variableBound{{GLP_LO, 0, 0}, {GLP_LO, 0, 0}};
 
-    GnuLinearSolver solver(GLP_MIN, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+    GnuLinearSolver solver{GLP_MIN, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
 
     solve(solver);
 
     expectedVariable = {0, .5};
 
-    verifyExpectedResults(variableCoefficient);
+    verifyExpectedResults(std::move(variableCoefficient));
 }
 
 BOOST_AUTO_TEST_CASE( maximizationWithTwoVariablesAndTwoAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
@@ -91,13 +91,13 @@ BOOST_AUTO_TEST_CASE( maximizationWithTwoVariablesAndTwoAdditionalInequalityCons
     std::vector<GnuLinearBound> constraintBound{{GLP_UP, 0, 1}, {GLP_UP, 0, 2}};
     std::vector<GnuLinearBound> variableBound{{GLP_LO, 0, 0}, {GLP_LO, 0, 0}};
 
-    GnuLinearSolver solver(GLP_MAX, variableCoefficient, constraintCoefficient, constraintBound, variableBound);
+    GnuLinearSolver solver{GLP_MAX, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
 
     solve(solver);
 
     expectedVariable = {.6, .2};
 
-    verifyExpectedResults(variableCoefficient);
+    verifyExpectedResults(std::move(variableCoefficient));
 
 }
 

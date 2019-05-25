@@ -10,10 +10,10 @@ GnuLinearBound::GnuLinearBound(int type, double lower, double upper):
 GnuLinearSolver::GnuLinearSolver(int problemType, std::vector<double> problemCoefficient, std::vector<std::vector<double>> constraintCoefficient, std::vector<GnuLinearBound> auxiliaryBound, std::vector<GnuLinearBound> structuralBound):
     m_problemObject {glp_create_prob()},
     m_problemType {problemType},
-    m_problemCoefficient {problemCoefficient},
-    m_constraintCoefficient {constraintCoefficient},
-    m_auxiliaryBound {auxiliaryBound},
-    m_structuralBound {structuralBound}
+    m_problemCoefficient {std::move(problemCoefficient)},
+    m_constraintCoefficient {std::move(constraintCoefficient)},
+    m_auxiliaryBound {std::move(auxiliaryBound)},
+    m_structuralBound {std::move(structuralBound)}
 {
     // set optimzation direction flag
     glp_set_obj_dir(m_problemObject, m_problemType);

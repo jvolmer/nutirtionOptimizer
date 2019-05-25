@@ -37,7 +37,7 @@ public:
     virtual double getResultValue() const = 0;
     
     virtual void addProblemCoefficient(double coefficient) = 0;
-    virtual void addConstraintCoefficients(const std::vector<double>& coefficients) = 0;
+    virtual void addConstraintCoefficients(std::vector<double> coefficients) = 0;
     virtual void addAuxiliaryBound(const GnuLinearBound& bound) = 0;
     virtual void addStructuralBound(const GnuLinearBound& bound) = 0;
 
@@ -66,7 +66,7 @@ public:
     double getResultValue() const {return m_resultValue;}
 
     void addProblemCoefficient(double coefficient){m_problemCoefficient.push_back(coefficient);}
-    void addConstraintCoefficients(const std::vector<double>& coefficients){m_constraintCoefficient.push_back(coefficients);}
+    void addConstraintCoefficients(std::vector<double> coefficients){m_constraintCoefficient.push_back(std::move(coefficients));}
     void addAuxiliaryBound(const GnuLinearBound& bound){m_auxiliaryBound.push_back(bound);}
     void addStructuralBound(const GnuLinearBound& bound){m_structuralBound.push_back(bound);}
 
