@@ -20,8 +20,7 @@ private:
     std::vector<double> m_nutritionMinimum;
 
 public:
-    NutritionDemandingUser(const std::string& name);
-    NutritionDemandingUser(const std::string& name, const std::vector<double>& nutritionMinimum);
+    NutritionDemandingUser(std::string name="", std::vector<double> nutritionMinimum={});
 
     const std::vector<double>& getNutritionMinima() const {return m_nutritionMinimum;}
 
