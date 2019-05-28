@@ -50,7 +50,7 @@ person.test : person_test.o person.o food.o specialFunctions.o
 	@./$@ #--log_level=test_suite
 	@echo 
 
-analyzer.test : analyzer_test.o analyzer.o person.o store.o solver.o food.o
+analyzer.test : analyzer_test.o analyzer.o person.o store.o solver.o food.o specialFunctions.o
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
 	@echo Running $@
 	@./$@ #--log_level=test_suite
@@ -79,7 +79,7 @@ food.o : food.hpp specialFunctions.hpp
 store.o : store.hpp food.hpp specialFunctions.hpp
 person.o : person.hpp food.hpp specialFunctions.hpp
 solver.o : solver.hpp
-analyzer.o : analyzer.hpp store.hpp person.hpp solver.hpp food.hpp spcecialFunctions.hpp
+analyzer.o : analyzer.hpp store.hpp person.hpp solver.hpp food.hpp specialFunctions.hpp
 specialFunctions.o : specialFunctions.hpp
 
 clean : 

@@ -91,7 +91,7 @@ public:
     double getResultValue() const {return 0;}
     
     void addProblemCoefficient(double coefficient){ results.push_back(coefficient);}
-    void addConstraintCoefficients(const std::vector<double>& coefficients){};
+    void addConstraintCoefficients(const std::vector<double> coefficients){};
     void addAuxiliaryBound(const GnuLinearBound& bound){};
     void addStructuralBound(const GnuLinearBound& bound){};
 
