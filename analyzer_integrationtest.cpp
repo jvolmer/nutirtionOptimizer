@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_CASE( test )
 {
 }
 
-BOOST_AUTO_TEST_CASE( computeFoodPlan )
+BOOST_AUTO_TEST_CASE( nutritionsAreSeperateFoods )
 {
     auto store = std::make_shared<FoodStore>("Kueche");
     store->addGood({"Eiweiss", {1, 0, 0}, 0, 1000});
