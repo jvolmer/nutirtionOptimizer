@@ -27,6 +27,9 @@ BOOST_AUTO_TEST_CASE( testCallToSolver )
 
     const std::vector<double>& actualAmount = analyzer.getAmounts();
     BOOST_TEST( expectedAmount == actualAmount, boost::test_tools::per_element() );
+
+    std::ofstream fileOut("foodPlan.out");
+    fileOut << analyzer.toJson();
                 
 }
 

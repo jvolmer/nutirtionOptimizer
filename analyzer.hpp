@@ -22,6 +22,8 @@ public:
 
     const std::vector<double>& getAmounts() const { return m_goodAmount; } 
     void computeFoodPlan();
+
+    Json::Value toJson() const;
 };
 
 

@@ -29,3 +29,33 @@ void Analyzer::computeFoodPlan()
         m_goodAmount.push_back(results[i]);
         //     m_store.m_food[i].setAmount(results[i]);
 }
+
+Json::Value Analyzer::toJson() const
+{
+    Json::Value foodAmounts;
+    const std::vector<Food>& allFood = m_store->getAllGoods();
+    std::vector<double> totalNutritions = {0};
+    totalNutritions.resize(m_store->getNumberOfNutritions(), 0);
+    for (unsigned ifood=0; ifood<allFood.size(); ifood++)
+    {
+        Json::Value oneFood;
+        oneFood = allFood[ifood].toJson();
+        // oneFood["name"] = food.getName();
+        oneFood["amount"] = m_goodAmount[ifood];
+        foodAmounts.append(oneFood);
+
+        const std::vector<double>& nutritions = allFood[ifood].getNutritionValues();
+        for (unsigned inutr=0; inutr<nutritions.size(); inutr++)
+            totalNutritions[inutr] += nutritions[inutr] * m_goodAmount[ifood];
+    }
+
+    Json::Value totalNutritionsOut;
+    for (unsigned i=0; i<totalNutritions.size(); i++)
+        totalNutritionsOut[std::to_string(i)] = totalNutritions[i];
+
+    Json::Value out;
+    out["food"] = foodAmounts;
+    out["totalNutritions"] = totalNutritionsOut;
+
+    return out;
+}
