@@ -12,7 +12,10 @@ public:
     virtual ~Store() {};
     virtual std::string getName() const = 0;
     virtual const std::vector<Food>& getAllGoods() const = 0;
+    virtual int getNumberOfNutritions() const = 0;
+
     virtual void addGood(Food good) = 0;
+    virtual void clearFood() = 0;
     
     virtual void readFromJson(const Json::Value& storeObj) = 0;
     virtual Json::Value toJson() const = 0;
@@ -29,7 +32,8 @@ public:
 
     std::string getName() const { return m_name; }
     const std::vector<Food>& getAllGoods() const { return m_food; }
-
+    int getNumberOfNutritions() const;
+    
     void addGood(Food food){ m_food.push_back(std::move(food)); }
     void clearFood(){ m_food.clear(); }
 
@@ -48,7 +52,10 @@ public:
     
     std::string getName() const { return ""; };
     const std::vector<Food>& getAllGoods() const { return m_good; }
+    int getNumberOfNutritions() const {if (m_good.size()==0) return 0; else return m_good[0].getNumberOfNutritions();}
+
     void addGood(Food good){ m_good.push_back(std::move(good)); };
+    void clearFood(){ m_good.clear(); }
     
     void readFromJson(const Json::Value& storeObj) {};
     Json::Value toJson() const { return Json::Value{}; };

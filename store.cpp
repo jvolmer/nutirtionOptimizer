@@ -6,6 +6,14 @@ FoodStore::FoodStore(std::string name, std::vector<Food> foods):
 {
 }
 
+int FoodStore::getNumberOfNutritions() const
+{
+    if (m_food.size() == 0)
+        return 0;
+    else
+        return m_food[0].getNumberOfNutritions();
+}
+
 void FoodStore::readFromJson(const Json::Value& storeObj)
 {
     m_name = storeObj["name"].asString();
