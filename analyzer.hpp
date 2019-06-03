@@ -12,7 +12,6 @@ private:
     std::shared_ptr<Store> m_store;
     std::shared_ptr<User> m_person;
     std::shared_ptr<Solver> m_solver;
-    std::vector<Analyzed> m_analyzedGoods;
     std::vector<double> m_goodAmount;
     
 public:
@@ -22,7 +21,6 @@ public:
     ~Analyzer() {};
 
     const std::vector<double>& getAmounts() const { return m_goodAmount; }
-    const std::vector<Analyzed>& getFoodPlan() const {return m_analyzedGoods; }
     void computeFoodPlan();
 
     Json::Value toJson() const;

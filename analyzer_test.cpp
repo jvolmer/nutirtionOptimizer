@@ -25,11 +25,11 @@ BOOST_AUTO_TEST_CASE( testCallToSolver )
     for (const Food& food : store->getAllGoods())
         expectedAmount.push_back(food.getCost());
 
-    std::vector<double> actualAmount;
-    for (const Analyzed& ana : analyzer.getFoodPlan())
-        actualAmount.push_back(ana.getAmount());
+    // std::vector<double> actualAmount;
+    // for (const Analyzed& ana : analyzer.getFoodPlan())
+    //     actualAmount.push_back(ana.getAmount());
     
-    // const std::vector<double>& actualAmount = analyzer.getAmounts();
+    const std::vector<double>& actualAmount = analyzer.getAmounts();
     BOOST_TEST( expectedAmount == actualAmount, boost::test_tools::per_element() );
 
     // std::ofstream fileOut("foodPlan.out");
