@@ -92,7 +92,6 @@ BOOST_AUTO_TEST_SUITE_END( )
 
 BOOST_AUTO_TEST_SUITE( json )
 
-
 BOOST_AUTO_TEST_CASE( writeAndReadJson )
 {
     std::string name = "moehre";
@@ -110,3 +109,18 @@ BOOST_AUTO_TEST_CASE( writeAndReadJson )
 }
 
 BOOST_AUTO_TEST_SUITE_END( )
+
+
+BOOST_AUTO_TEST_SUITE( decorator )
+
+BOOST_AUTO_TEST_CASE( createAnalyzedFood )
+{
+    Good* food = new Food{"huehnchen"};
+    Good* foodNew = new Analyzed{food, 4.2};
+
+    BOOST_TEST( food->getName() == foodNew->getName() );
+    delete food;
+    delete foodNew;
+}
+
+BOOST_AUTO_TEST_SUITE_END()

@@ -82,4 +82,30 @@ public:
     void readFromJson(const Json::Value& foodObj) {};
 };
 
+class Analyzed : public Good{
+    
+private:
+    const Good* m_food;
+    double m_amount;
+public:
+    Analyzed(const Good* food, double amount):
+        m_food{food},
+        m_amount{amount}
+    {}
+
+    std::string getName() const {return m_food->getName();}
+    double getMin() const {return m_food->getMin();}
+    double getMax() const {return m_food->getMax();}
+    const std::vector<double>& getNutritionValues() const {return m_food->getNutritionValues();}
+    double getCost() const {return m_food->getCost();}
+    double getAmount() const {return m_amount;}
+    int getNumberOfNutritions() const {return m_food->getNumberOfNutritions();}
+    
+    void setName(const std::string& name) {};
+    void setAmount(double amount) {};
+    void printAmount() const {};
+    Json::Value toJson() const {return Json::Value{};}
+    void readFromJson(const Json::Value& foodObj) {};
+};
+    
 #endif
