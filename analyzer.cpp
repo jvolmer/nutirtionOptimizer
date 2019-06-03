@@ -26,7 +26,8 @@ void Analyzer::computeFoodPlan()
     const std::vector<double>& results = m_solver->getResultVariables();
 
     for (unsigned i=0; i<results.size(); i++)
-        m_goodAmount.push_back(results[i]);
+        m_analyzedGoods.push_back(Analyzed(&allFood[i], results[i]));
+        // m_goodAmount.push_back(results[i]);
         //     m_store.m_food[i].setAmount(results[i]);
 }
 
