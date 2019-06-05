@@ -113,27 +113,27 @@ BOOST_AUTO_TEST_SUITE_END( )
 
 BOOST_AUTO_TEST_SUITE( decorator )
 
-BOOST_AUTO_TEST_CASE( ApplyFirstValuedThenAnalyzedDecorator )
+BOOST_AUTO_TEST_CASE( ApplyFirstCostThenAmountDecorator )
 {
     double amount{3.1};
     double cost{400};
 
     std::unique_ptr<Food> food = std::make_unique<Food>("himbeere");
-    food = std::make_unique<Valued>(std::move(food), cost);
-    food = std::make_unique<Analyzed>(std::move(food), amount);
+    food = std::make_unique<Cost>(std::move(food), cost);
+    food = std::make_unique<Amount>(std::move(food), amount);
 
     BOOST_TEST( food->getCost() == cost );
     BOOST_TEST( food->getAmount() == amount );
 }
 
-BOOST_AUTO_TEST_CASE( ApplyFirstAnlyzedThenValuedDecorator )
+BOOST_AUTO_TEST_CASE( ApplyFirstAmountThenCostDecorator )
 {
     double amount{3.1};
     double cost{400};
 
     std::unique_ptr<Food> food = std::make_unique<Food>("himbeere");
-    food = std::make_unique<Analyzed>(std::move(food), amount);
-    food = std::make_unique<Valued>(std::move(food), cost);
+    food = std::make_unique<Amount>(std::move(food), amount);
+    food = std::make_unique<Cost>(std::move(food), cost);
 
     BOOST_TEST( food->getCost() == cost );
     BOOST_TEST( food->getAmount() == amount );

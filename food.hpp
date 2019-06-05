@@ -91,27 +91,27 @@ public:
     virtual ~FoodDecorator() {};
 };
 
-class Analyzed : public FoodDecorator
+class Amount : public FoodDecorator
 {
 private:
     std::unique_ptr<Food> m_food;
     double m_amount;
 public:
-    Analyzed(std::unique_ptr<Food> food, double amount);
-    ~Analyzed() {};
+    Amount(std::unique_ptr<Food> food, double amount);
+    ~Amount() {};
 
     double getAmount() const { return m_amount; }
     double getCost() const { return m_food->getCost(); }
 };
 
-class Valued : public FoodDecorator
+class Cost : public FoodDecorator
 {
 private:
     std::unique_ptr<Food> m_food;
     double m_cost;
 public:
-    Valued(std::unique_ptr<Food> food, double cost);
-    ~Valued() {};
+    Cost(std::unique_ptr<Food> food, double cost);
+    ~Cost() {};
 
     double getAmount() const {return m_food->getAmount(); }
     double getCost() const { return m_cost; }

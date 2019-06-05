@@ -76,13 +76,13 @@ void Food::readFromJson(const Json::Value& foodObj)
 
 // Decorators
 
-Analyzed::Analyzed(std::unique_ptr<Food> food, double amount):
+Amount::Amount(std::unique_ptr<Food> food, double amount):
     m_food {std::move(food)},
     m_amount {amount}
 {
 }
 
-Valued::Valued(std::unique_ptr<Food> food, double cost):
+Cost::Cost(std::unique_ptr<Food> food, double cost):
     m_food {std::move(food)},
     m_cost {cost}
 {
