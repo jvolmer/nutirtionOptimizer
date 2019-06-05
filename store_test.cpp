@@ -11,13 +11,11 @@ BOOST_AUTO_TEST_CASE( addOneFood )
 {
     Food testFoodIn{"test"};
 
-    FoodStore newStore{"kueche"};
-    newStore.addGood(testFoodIn);
-    const std::vector<Food>& foodVector = newStore.getAllGoods();
-    const Food& testFoodOut = foodVector.back();
+    FoodStore store{"kueche"};
+    store.addGood(testFoodIn);
 
-    BOOST_TEST( foodVector.size() == 1 );
-    BOOST_TEST( testFoodOut == testFoodIn );
+    BOOST_TEST( store.getNumberOfFoods() == 1);
+    BOOST_TEST( store.containsFoodAtPosition(0, testFoodIn) );
 }
 
 BOOST_AUTO_TEST_CASE( addTwoFoods )
@@ -25,16 +23,13 @@ BOOST_AUTO_TEST_CASE( addTwoFoods )
     Food testFoodIn1{"test1"};
     Food testFoodIn2{"test2"};
     
-    FoodStore newStore{"kueche"};
-    newStore.addGood(testFoodIn1);
-    newStore.addGood(testFoodIn2);
-    const std::vector<Food>& foodVector = newStore.getAllGoods();
-    const Food& testFoodOut1 = foodVector.front();
-    const Food& testFoodOut2 = foodVector.back();
+    FoodStore store{"kueche"};
+    store.addGood(testFoodIn1);
+    store.addGood(testFoodIn2);
 
-    BOOST_TEST( foodVector.size() == 2 );
-    BOOST_TEST( testFoodOut1 == testFoodIn1 );
-    BOOST_TEST( testFoodOut2 == testFoodIn2 );
+    BOOST_TEST( store.getNumberOfFoods() == 2 );
+    BOOST_TEST( store.containsFoodAtPosition(0, testFoodIn1) );
+    BOOST_TEST( store.containsFoodAtPosition(1, testFoodIn2) );
 }
 
 BOOST_AUTO_TEST_CASE( testReadAndWrite )
@@ -59,11 +54,9 @@ BOOST_AUTO_TEST_CASE( testReadAndWrite )
     store.readFromJson(fileContent);
 
     // test
-    const std::vector<Food>& foodVector = store.getAllGoods();    
-    const Food& foodOut = foodVector.back();
-
-    BOOST_TEST( foodVector.size() == 1 );
-    BOOST_TEST( foodOut == foodIn );
+    BOOST_TEST( store.getNumberOfFoods() == 1 );
+    BOOST_TEST( store.containsFoodAtPosition(0, foodIn) );
 }
 
 BOOST_AUTO_TEST_SUITE_END( )
+
