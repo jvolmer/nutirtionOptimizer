@@ -1,11 +1,10 @@
 #include "food.hpp"
 
-Food::Food(std::string name, std::vector<double> nutritions, double min, double max, double cost):
+Food::Food(std::string name, std::vector<double> nutritions, double min, double max):
     m_name {std::move(name)},
     m_nutritionValues {std::move(nutritions)},
     m_min {min},
-    m_max {max},
-    m_cost {cost}
+    m_max {max}
 {
     if (m_min > m_max)
     {
@@ -14,11 +13,15 @@ Food::Food(std::string name, std::vector<double> nutritions, double min, double 
         m_max = tmp;
     }
 }
+
+Food::Food(const Food& food):
+    Food(food.m_name, food.m_nutritionValues, food.m_min, food.m_max)
+{}
     
-void Food::printAmount() const
-{
-    std::cout << m_name << "\t\t" << m_amount << " g" << std::endl;
-}
+// void Food::printAmount() const
+// {
+//     std::cout << m_name << "\t\t" << m_amount << " g" << std::endl;
+// }
 
 
 bool operator== (const Food& lhs, const Food& rhs)
@@ -39,7 +42,6 @@ std::ostream& operator<< (std::ostream &out, const Food& food)
         out << nutrition << " ";
     out << "}, ";
     out << "[ " << food.m_min << ", " << food.m_max << " ], ";
-    out << food.m_cost;
     return out;
 }
 
@@ -70,4 +72,18 @@ void Food::readFromJson(const Json::Value& foodObj)
     
     m_min = foodObj["min"].asDouble();
     m_max = foodObj["max"].asDouble();
+}
+
+// Decorators
+
+Analyzed::Analyzed(std::unique_ptr<Food> food, double amount):
+    m_food {std::move(food)},
+    m_amount {amount}
+{
+}
+
+Valued::Valued(std::unique_ptr<Food> food, double cost):
+    m_food {std::move(food)},
+    m_cost {cost}
+{
 }
