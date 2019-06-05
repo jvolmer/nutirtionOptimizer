@@ -5,7 +5,7 @@
 #include "store.hpp"
 #include "food.hpp"
 
-BOOST_AUTO_TEST_SUITE (storetest)
+BOOST_AUTO_TEST_SUITE (initialization)
 
 BOOST_AUTO_TEST_CASE( addOneFood )
 {
@@ -31,6 +31,28 @@ BOOST_AUTO_TEST_CASE( addTwoFoods )
     BOOST_TEST( store.containsFoodAtPosition(0, testFoodIn1) );
     BOOST_TEST( store.containsFoodAtPosition(1, testFoodIn2) );
 }
+
+BOOST_AUTO_TEST_SUITE_END( )
+
+
+BOOST_AUTO_TEST_SUITE ( decorator )
+
+BOOST_AUTO_TEST_CASE( decorator )
+{
+    FoodStore store{"leckerSchmecker"};
+    Food food1{"moehre", {4.1, 2}, 1.1, 9};
+    store.addGood(food1);
+
+    std::vector<double> amounts{10};
+    store.decorateWithAmount(amounts);
+
+    // BOOST_TEST( store.getAmount()
+}
+
+BOOST_AUTO_TEST_SUITE_END( )
+
+
+BOOST_AUTO_TEST_SUITE ( writeAndReadJson )
 
 BOOST_AUTO_TEST_CASE( testReadAndWrite )
 {

@@ -7,8 +7,8 @@
 #include <json/json.h>
 #include "food.hpp"
 
-class Store{
-
+class Store
+{
 public:
     virtual ~Store() {};
     virtual std::string getName() const = 0;
@@ -20,13 +20,16 @@ public:
 
     virtual void addGood(Food good) = 0;
     virtual void clearFood() = 0;
+
+    virtual void decorateWithCost(const std::vector<double>& newVariableVector) = 0;
+    virtual void decorateWithAmount(const std::vector<double>& newVariableVector) = 0;
     
     virtual void readFromJson(const Json::Value& storeObj) = 0;
     virtual Json::Value toJson() const = 0;
 };
 
-class FoodStore : public Store {
-
+class FoodStore : public Store
+{
 private:
     std::string m_name;
     std::vector<std::unique_ptr<Food>> m_food;
@@ -38,7 +41,7 @@ public:
     // const std::vector<Food>& getAllGoods() const { return m_food; }
     int getNumberOfNutritions() const;
     int getNumberOfFoods() const { return m_food.size(); }
-
+    
     bool containsFoodAtPosition(int i, const Food& foodToCompare) const
     { return *m_food[i] == foodToCompare; }
     
@@ -46,12 +49,15 @@ public:
     void addGood(Food food){ m_food.push_back(std::make_unique<Food>(std::move(food))); }
     void clearFood(){ m_food.clear(); }
 
+    void decorateWithCost(const std::vector<double>& newVariableVector);
+    void decorateWithAmount(const std::vector<double>& newVariableVector);
+    
     void readFromJson(const Json::Value& storeObj);
     Json::Value toJson() const;
 };
 
-class MockStore : public Store{
-
+class MockStore : public Store
+{
 private:
     std::vector<Food> m_good;
     
@@ -69,7 +75,10 @@ public:
 
     void addGood(Food good){ m_good.push_back(std::move(good)); };
     void clearFood(){ m_good.clear(); }
-    
+
+    void decorateWithCost(const std::vector<double>& newVariableVector){};
+    void decorateWithAmount(const std::vector<double>& newVariableVector){};
+
     void readFromJson(const Json::Value& storeObj) {};
     Json::Value toJson() const { return Json::Value{}; };
 };

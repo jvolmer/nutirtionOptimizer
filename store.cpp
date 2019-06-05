@@ -14,6 +14,20 @@ int FoodStore::getNumberOfNutritions() const
         return m_food[0]->getNumberOfNutritions();
 }
 
+void FoodStore::decorateWithCost(const std::vector<double>& newVariableVector)
+{
+    if (newVariableVector.size() == getNumberOfNutritions())
+        for (unsigned i=0; i<newVariableVector.size(); i++)
+            m_food[i] = std::make_unique<Cost>(std::move(m_food[i]), newVariableVector[i]);
+}
+
+void FoodStore::decorateWithAmount(const std::vector<double>& newVariableVector)
+{
+    if (newVariableVector.size() == getNumberOfNutritions())
+        for (unsigned i=0; i<newVariableVector.size(); i++)
+            m_food[i] = std::make_unique<Amount>(std::move(m_food[i]), newVariableVector[i]);
+}
+
 void FoodStore::readFromJson(const Json::Value& storeObj)
 {
     m_name = storeObj["name"].asString();
