@@ -6,7 +6,7 @@ FoodStore::FoodStore(std::string name): //, std::vector<Food> foods):
 {
 }
 
-int FoodStore::getNumberOfNutritions() const
+unsigned FoodStore::getNumberOfNutritions() const
 {
     if (m_food.size() == 0)
         return 0;

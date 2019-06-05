@@ -13,8 +13,8 @@ public:
     virtual ~Store() {};
     virtual std::string getName() const = 0;
     // virtual const std::vector<Food>& getAllGoods() const = 0;
-    virtual int getNumberOfNutritions() const = 0;
-    virtual int getNumberOfFoods() const = 0;
+    virtual unsigned getNumberOfNutritions() const = 0;
+    virtual unsigned getNumberOfFoods() const = 0;
 
     virtual bool containsFoodAtPosition(int i, const Food& foodToCompare) const = 0;
 
@@ -39,8 +39,8 @@ public:
 
     std::string getName() const { return m_name; }
     // const std::vector<Food>& getAllGoods() const { return m_food; }
-    int getNumberOfNutritions() const;
-    int getNumberOfFoods() const { return m_food.size(); }
+    unsigned getNumberOfNutritions() const;
+    unsigned getNumberOfFoods() const { return m_food.size(); }
     
     bool containsFoodAtPosition(int i, const Food& foodToCompare) const
     { return *m_food[i] == foodToCompare; }
@@ -67,8 +67,8 @@ public:
     
     std::string getName() const { return ""; };
     // const std::vector<Food>& getAllGoods() const { return m_good; }
-    int getNumberOfNutritions() const {if (m_good.size()==0) return 0; else return m_good[0].getNumberOfNutritions();}
-    int getNumberOfFoods() const { return m_good.size(); }
+    unsigned getNumberOfNutritions() const {if (m_good.size()==0) return 0; else return m_good[0].getNumberOfNutritions();}
+    unsigned getNumberOfFoods() const { return m_good.size(); }
 
     bool containsFoodAtPosition(int i, const Food& foodToCompare) const
     { return m_good[i] == foodToCompare; }

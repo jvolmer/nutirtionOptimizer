@@ -16,11 +16,9 @@ public:
     virtual const std::vector<double>& getNutritionValues() const = 0;
     virtual double getCost() const = 0;
     virtual double getAmount() const = 0;
-    virtual int getNumberOfNutritions() const = 0;
+    virtual unsigned getNumberOfNutritions() const = 0;
 
     virtual void setName(const std::string& name) = 0;
-    // virtual void setAmount(double amount) = 0;
-    // virtual void printAmount() const = 0;
     
     virtual Json::Value toJson() const = 0;
     virtual void readFromJson(const Json::Value& foodObj) = 0;
@@ -49,11 +47,9 @@ public:
     const std::vector<double>& getNutritionValues() const { return m_nutritionValues; }
     double getCost() const { return -1; }
     double getAmount() const { return -1; }
-    int getNumberOfNutritions() const { return m_nutritionValues.size(); }
+    unsigned getNumberOfNutritions() const { return m_nutritionValues.size(); }
     
     void setName(const std::string& name){ m_name = name; }    
-    // void setAmount(double amount){ m_amount = amount; }
-    // void printAmount() const;
     
     Json::Value toJson() const;
     void readFromJson(const Json::Value& foodObj);
@@ -73,11 +69,9 @@ public:
     const std::vector<double>& getNutritionValues() const {return m_nutritionValues;}
     double getCost() const {return 0;}
     double getAmount() const {return 0;}
-    int getNumberOfNutritions() const {return m_nutritionValues.size();}
+    unsigned getNumberOfNutritions() const {return m_nutritionValues.size();}
     
     void setName(const std::string& name) {};
-    // void setAmount(double amount) {};
-    // void printAmount() const {};
 
     Json::Value toJson() const {return Json::Value{};}
     void readFromJson(const Json::Value& foodObj) {};
