@@ -76,6 +76,19 @@ void FoodStore::readFromJson(const Json::Value& storeObj)
     }
 }
 
+// void FoodStore::readFromJson(std::unique_prt<Food> foodPtr, const Json::Value& storeObj)
+// {
+//     m_name = storeObj["name"].asString();
+
+//     clearFood();
+//     const Json::Value& foods = storeObj["foods"];
+//     for (const Json::Value& foodObj : foods)
+//     {
+//         foodPtr.readFromJson(foodObj);
+//         addGood(std::move(foodPtr));
+//     }
+// }
+
 Json::Value FoodStore::toJson() const
 {
     Json::Value foods;

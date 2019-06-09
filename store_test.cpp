@@ -120,5 +120,18 @@ BOOST_AUTO_TEST_CASE( testReadAndWrite )
     BOOST_TEST( store.containsFoodAtPosition(0, foodIn) );
 }
 
+BOOST_AUTO_TEST_CASE( testWriteAmountDecoratorToJson )
+{
+    FoodStore store{"testStore"};
+    Food foodIn{"testFood", {3.221, 4.3, 9.99992}, 4.3, 999.91};
+    store.addGood(foodIn);
+    store.decorateWithAmount({.3});
+
+    Json::Value output = store.toJson();
+
+    // check if first food in store includes amount variabel
+    BOOST_TEST( output["foods"][0].isMember("amount") );
+}
+
 BOOST_AUTO_TEST_SUITE_END( )
 

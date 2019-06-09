@@ -50,6 +50,7 @@ public:
     { return *m_food[i] == foodToCompare; }
     
     void addGood(Food food){ m_food.push_back(std::make_unique<Food>(std::move(food))); }
+    void addGood(std::unique_ptr<Food> food){ m_food.push_back(std::move(food)); }
     void clearFood(){ m_food.clear(); }
 
     void decorateWithCost(const std::vector<double>& newVariableVector);
