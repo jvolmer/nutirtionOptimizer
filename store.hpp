@@ -12,9 +12,11 @@ class Store
 public:
     virtual ~Store() {};
     virtual std::string getName() const = 0;
-    // virtual const std::vector<Food>& getAllGoods() const = 0;
     virtual unsigned getNumberOfNutritions() const = 0;
     virtual unsigned getNumberOfFoods() const = 0;
+    // virtual std::vector<std::reference_wrapper<Food>> getAllGoodReferences() const = 0;
+    std::vector<double> getFoodPropertyVector(std::string property) const;
+    std::vector<std::vector<double>> getFoodNutritionValues() const;
 
     virtual bool containsFoodAtPosition(int i, const Food& foodToCompare) const = 0;
 
@@ -38,14 +40,15 @@ public:
     FoodStore(std::string name=""); //, std::vector<std::unique_ptr<Food>> nutritions={});
 
     std::string getName() const { return m_name; }
-    // const std::vector<Food>& getAllGoods() const { return m_food; }
     unsigned getNumberOfNutritions() const;
     unsigned getNumberOfFoods() const { return m_food.size(); }
+    // std::vector<std::reference_wrapper<Food>> getAllGoodReferences() const;
+    std::vector<double> getFoodPropertyVector(std::string property) const;
+    std::vector<std::vector<double>> getFoodNutritionValues() const;
     
     bool containsFoodAtPosition(int i, const Food& foodToCompare) const
     { return *m_food[i] == foodToCompare; }
     
-    // void addGood(Food food){ m_food.push_back(std::move(food)); }
     void addGood(Food food){ m_food.push_back(std::make_unique<Food>(std::move(food))); }
     void clearFood(){ m_food.clear(); }
 
@@ -66,10 +69,12 @@ public:
     ~MockStore() {};
     
     std::string getName() const { return ""; };
-    // const std::vector<Food>& getAllGoods() const { return m_good; }
     unsigned getNumberOfNutritions() const {if (m_good.size()==0) return 0; else return m_good[0].getNumberOfNutritions();}
     unsigned getNumberOfFoods() const { return m_good.size(); }
-
+    // std::vector<std::reference_wrapper<Food>> getAllGoodReferences() const {return {};}
+    std::vector<double> getFoodPropertyVector(std::string property) const;
+    std::vector<std::vector<double>> getFoodNutritionValues() const;
+    
     bool containsFoodAtPosition(int i, const Food& foodToCompare) const
     { return m_good[i] == foodToCompare; }
 
