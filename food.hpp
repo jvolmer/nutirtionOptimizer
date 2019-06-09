@@ -6,6 +6,10 @@
 #include <json/json.h>
 #include "specialFunctions.hpp"
 
+enum class InputType{
+    JSON
+};
+
 class Good{
 
 public:
@@ -36,6 +40,7 @@ private:
 public:
     Food(std::string name="", std::vector<double> nutritions={}, double min=0, double max=0);
     Food(const Food& food);
+    Food(InputType inputType, const Json::Value& jsonObject);
     ~Food() {};
     
     friend bool operator== (const Food& lhs, const Food& rhs);
@@ -91,11 +96,14 @@ private:
     std::unique_ptr<Food> m_food;
     double m_amount;
 public:
-    Amount(std::unique_ptr<Food> food, double amount);
+    Amount(std::unique_ptr<Food> food, double amount=0.);
     ~Amount() {};
 
     double getAmount() const { return m_amount; }
     double getCost() const { return m_food->getCost(); }
+
+    Json::Value toJson() const;
+    void readFromJson(const Json::Value& jsonObject);
 };
 
 class Cost : public FoodDecorator
@@ -104,11 +112,14 @@ private:
     std::unique_ptr<Food> m_food;
     double m_cost;
 public:
-    Cost(std::unique_ptr<Food> food, double cost);
+    Cost(std::unique_ptr<Food> food, double cost=0.);
     ~Cost() {};
 
     double getAmount() const {return m_food->getAmount(); }
     double getCost() const { return m_cost; }
+
+    Json::Value toJson() const;
+    void readFromJson(const Json::Value& jsonObject);
 };
 
 #endif

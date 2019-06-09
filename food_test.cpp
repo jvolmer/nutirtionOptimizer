@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_SUITE_END( )
 
 BOOST_AUTO_TEST_SUITE( json )
 
-BOOST_AUTO_TEST_CASE( writeAndReadJson )
+BOOST_AUTO_TEST_CASE( writeAndReadUsingJson )
 {
     std::string name = "moehre";
     std::vector<double> nutrition {1.2, 100, 204};
@@ -102,10 +102,31 @@ BOOST_AUTO_TEST_CASE( writeAndReadJson )
     Food foodIn{name, std::move(nutrition), min, max};
     Json::Value foodObj = foodIn.toJson();
     
-    Food foodOut;
-    foodOut.readFromJson(foodObj);
+    Food foodOut{InputType::JSON, foodObj};
 
     BOOST_TEST( foodOut == foodIn );
+}
+
+BOOST_AUTO_TEST_CASE( writeAndReadDecoratorAmountAndCostUsingJson )
+{
+    std::string name = "moehre";
+    std::vector<double> nutrition {1.2, 100, 204};
+    double min = 4.332;
+    double max = 3.22;
+    double amount = 10;
+    double cost = 100;
+
+    std::unique_ptr<Food> foodIn = std::make_unique<Food>(std::move(name), std::move(nutrition), min, max);
+    foodIn = std::make_unique<Amount>(std::move(foodIn), amount);
+    foodIn = std::make_unique<Cost>(std::move(foodIn), cost);
+    
+    Json::Value foodObj = foodIn->toJson();
+    std::unique_ptr<Food> foodOut = std::make_unique<Food>();
+    foodOut = std::make_unique<Cost>(std::move(foodOut));
+    foodOut = std::make_unique<Amount>(std::move(foodOut));
+    foodOut->readFromJson(foodObj);
+
+    BOOST_TEST( *foodOut == *foodIn );
 }
 
 BOOST_AUTO_TEST_SUITE_END( )

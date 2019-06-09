@@ -17,7 +17,13 @@ Food::Food(std::string name, std::vector<double> nutritions, double min, double 
 Food::Food(const Food& food):
     Food(food.m_name, food.m_nutritionValues, food.m_min, food.m_max)
 {}
-    
+
+Food::Food(InputType inputType, const Json::Value& foodObj)
+{
+    if (inputType == InputType::JSON)
+        readFromJson(foodObj);
+}
+
 // void Food::printAmount() const
 // {
 //     std::cout << m_name << "\t\t" << m_amount << " g" << std::endl;
@@ -82,8 +88,41 @@ Amount::Amount(std::unique_ptr<Food> food, double amount):
 {
 }
 
+Json::Value Amount::toJson() const
+{
+    Json::Value foodOut;
+    foodOut = m_food->toJson();
+
+    foodOut["amount"] = m_amount;
+
+    return foodOut;
+}
+
+void Amount::readFromJson(const Json::Value& jsonObject)
+{
+    m_food->readFromJson(jsonObject);
+    m_amount = jsonObject["amount"].asDouble();
+}
+
+
 Cost::Cost(std::unique_ptr<Food> food, double cost):
     m_food {std::move(food)},
     m_cost {cost}
 {
+}
+
+Json::Value Cost::toJson() const
+{
+    Json::Value foodOut;
+    foodOut = m_food->toJson();
+
+    foodOut["cost"] = m_cost;
+
+    return foodOut;
+}
+
+void Cost::readFromJson(const Json::Value& jsonObject)
+{
+    m_food->readFromJson(jsonObject);
+    m_cost = jsonObject["cost"].asDouble();
 }
