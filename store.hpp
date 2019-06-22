@@ -15,8 +15,8 @@ public:
     virtual unsigned getNumberOfNutritions() const = 0;
     virtual unsigned getNumberOfFoods() const = 0;
     // virtual std::vector<std::reference_wrapper<Food>> getAllGoodReferences() const = 0;
-    std::vector<double> getFoodPropertyVector(std::string property) const;
-    std::vector<std::vector<double>> getFoodNutritionValues() const;
+    virtual std::vector<double> getFoodPropertyVector(std::string property) const = 0;
+    virtual std::vector<std::vector<double>> getFoodNutritionValues() const = 0;
 
     virtual bool containsFoodAtPosition(int i, const Food& foodToCompare) const = 0;
 
@@ -73,13 +73,13 @@ public:
     unsigned getNumberOfNutritions() const {if (m_good.size()==0) return 0; else return m_good[0].getNumberOfNutritions();}
     unsigned getNumberOfFoods() const { return m_good.size(); }
     // std::vector<std::reference_wrapper<Food>> getAllGoodReferences() const {return {};}
-    std::vector<double> getFoodPropertyVector(std::string property) const;
-    std::vector<std::vector<double>> getFoodNutritionValues() const;
+    std::vector<double> getFoodPropertyVector(std::string property) const { return {}; }
+    std::vector<std::vector<double>> getFoodNutritionValues() const {return {}; }
     
     bool containsFoodAtPosition(int i, const Food& foodToCompare) const
     { return m_good[i] == foodToCompare; }
 
-    void addGood(Food good){ m_good.push_back(std::move(good)); };
+    void addGood(Food good){}; // m_good.push_back(std::move(good)); };
     void clearFood(){ m_good.clear(); }
 
     void decorateWithCost(const std::vector<double>& newVariableVector){};

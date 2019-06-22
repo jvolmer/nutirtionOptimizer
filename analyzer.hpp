@@ -9,21 +9,20 @@
 class Analyzer{
 
 private:
-    std::shared_ptr<Store> m_store;
-    std::shared_ptr<User> m_person;
-    std::shared_ptr<Solver> m_solver;
-    std::vector<double> m_goodAmount;
+    std::unique_ptr<Store> m_store;
+    std::unique_ptr<User> m_person;
+    std::unique_ptr<Solver> m_solver;
     
 public:
-    Analyzer(std::shared_ptr<Store> store, std::shared_ptr<User> person, std::shared_ptr<Solver> solver);
-    Analyzer(std::shared_ptr<Store> store) {};
+    Analyzer(std::unique_ptr<Store> store, std::unique_ptr<User> person, std::unique_ptr<Solver> solver);
+    Analyzer(std::unique_ptr<Store> store) {};
     Analyzer() {};
     ~Analyzer() {};
 
-    const std::vector<double>& getAmounts() const { return m_goodAmount; }
+    const std::vector<double>& getAmounts() const { return m_solver->getResultVariables(); }
     void computeFoodPlan();
 
-    Json::Value toJson() const;
+    // Json::Value toJson() const;
 };
 
 

@@ -9,28 +9,24 @@
 
 BOOST_AUTO_TEST_SUITE( analyzertest )
 
-BOOST_AUTO_TEST_CASE( testCallToSolver )
+BOOST_AUTO_TEST_CASE( testCallToSolver_UserNutritionMinimaIsWrittenToSolverAmount )
 {    
-    auto store = std::make_shared<MockStore>();
-    store->addGood({"PureNutrition1", {1, 0, 0}, 0, 100, .5});
-    store->addGood({"PureNutrition2", {0, 1, 0}, 0, 100, .2});
+    auto store = std::make_unique<MockStore>();
+    store->addGood({"PureNutrition1", {1, 0, 0}, .4, 100});
+    store->addGood({"PureNutrition2", {0, 1, 0}, .5, 100});
+    
+    auto user = std::make_unique<MockUser>();
+    std::vector<double> expectedAmount = {1., 2.};
+    user->setNutritionMinima(expectedAmount);
+    
+    auto solver = std::make_unique<MockSolver>();
 
-    auto user = std::make_shared<MockUser>();
-    auto solver = std::make_shared<MockSolver>();
-
-    Analyzer analyzer(store, user, solver);
+    Analyzer analyzer(std::move(store), std::move(user), std::move(solver));
     analyzer.computeFoodPlan();
 
-    std::vector<double> expectedAmount;
-    for (const Food& food : store->getAllGoods())
-        expectedAmount.push_back(food.getCost());
-
-    // std::vector<double> actualAmount;
-    // for (const Analyzed& ana : analyzer.getFoodPlan())
-    //     actualAmount.push_back(ana.getAmount());
-    
     const std::vector<double>& actualAmount = analyzer.getAmounts();
-    BOOST_TEST( expectedAmount == actualAmount, boost::test_tools::per_element() );
+    
+    BOOST_TEST( expectedAmount == actualAmount );
 
     // std::ofstream fileOut("foodPlan.out");
     // fileOut << analyzer.toJson();

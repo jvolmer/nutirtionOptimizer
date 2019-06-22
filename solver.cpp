@@ -28,6 +28,19 @@ GnuLinearSolver::~GnuLinearSolver()
     glp_delete_prob(m_problemObject);
 }
 
+void GnuLinearSolver::setStructuralBound(std::vector<double> minBounds, std::vector<double> maxBounds)
+{
+    for (unsigned i=0; i<minBounds.size(); i++)
+        addStructuralBound({GLP_DB, minBounds[i], maxBounds[i]});        
+}
+
+void GnuLinearSolver::setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds)
+{
+    for (unsigned i=0; i<minBounds.size(); i++)
+        addAuxiliaryBound({GLP_LO, minBounds[i], 0.});        
+}
+
+            
 void GnuLinearSolver::prepare()
 {
     prepareStructuralVariables();

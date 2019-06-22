@@ -41,6 +41,12 @@ public:
     virtual void addAuxiliaryBound(const GnuLinearBound& bound) = 0;
     virtual void addStructuralBound(const GnuLinearBound& bound) = 0;
 
+    virtual void setProblemCoefficient(std::vector<double> coefficients) = 0;
+    virtual void setConstraintCoefficients(std::vector<std::vector<double>> coefficientVectors) = 0;
+    virtual void setStructuralBound(std::vector<double> minBounds, std::vector<double> maxBounds) = 0;
+    virtual void setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds) = 0;
+
+
     virtual void prepare() = 0;
     virtual void solve() = 0;
 
@@ -70,6 +76,11 @@ public:
     void addAuxiliaryBound(const GnuLinearBound& bound){m_auxiliaryBound.push_back(bound);}
     void addStructuralBound(const GnuLinearBound& bound){m_structuralBound.push_back(bound);}
 
+    void setProblemCoefficient(std::vector<double> coefficients){ m_problemCoefficient = std::move(coefficients); }
+    void setConstraintCoefficients(std::vector<std::vector<double>> coefficientVectors){ m_constraintCoefficient = std::move(coefficientVectors); }
+    void setStructuralBound(std::vector<double> minBounds, std::vector<double> maxBounds);
+    void setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds);
+    
     void prepareStructuralVariables();
     void prepareAuxiliaryVariables();
     void prepare();
@@ -81,20 +92,25 @@ public:
 class MockSolver : public Solver
 {
 private:
-    std::vector<double> results;
+    std::vector<double> m_results;
     
 public:
     MockSolver() {};
     ~MockSolver() {};
 
-    const std::vector<double>& getResultVariables() const {return results;}
+    const std::vector<double>& getResultVariables() const {return m_results;}
     double getResultValue() const {return 0;}
     
-    void addProblemCoefficient(double coefficient){ results.push_back(coefficient);}
+    void addProblemCoefficient(double coefficient){} //{ results.push_back(coefficient);}
     void addConstraintCoefficients(const std::vector<double> coefficients){};
     void addAuxiliaryBound(const GnuLinearBound& bound){};
     void addStructuralBound(const GnuLinearBound& bound){};
 
+    void setProblemCoefficient(std::vector<double> coefficients){}
+    void setConstraintCoefficients(std::vector<std::vector<double>> coefficientVectors){};
+    void setStructuralBound(std::vector<double> minBounds, std::vector<double> maxBounds){}
+    void setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds){ m_results = std::move(minBounds); };
+    
     void prepare(){};
     void solve(){};
 };

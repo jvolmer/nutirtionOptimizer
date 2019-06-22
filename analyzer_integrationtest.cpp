@@ -14,12 +14,12 @@ BOOST_AUTO_TEST_CASE( test )
 
 BOOST_AUTO_TEST_CASE( nutritionsAreSeperateFoods )
 {
-    auto store = std::make_shared<FoodStore>("Kueche");
+    auto store = std::make_unique<FoodStore>("Kueche");
     store->addGood({"Eiweiss", {1, 0, 0}, 0, 1000});
     store->addGood({"MUFA", {0, 1, 0}, 0, 1000});
     store->addGood({"Eicosapentaensaeure", {0, 0, 1}, 0, 1000});
  
-    auto julia = std::make_shared<NutritionDemandingUser>("Julia");
+    auto julia = std::make_unique<NutritionDemandingUser>("Julia");
     julia->setNutritionMinima({1, 1, 1});
 
     auto solver = std::make_shared<GnuLinearSolver>(GLP_MIN);

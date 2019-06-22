@@ -33,14 +33,14 @@ public:
 class MockUser : public User
 {
 private:
-    std::vector<double> m_nutritionMinima{};
+    std::vector<double> m_nutritionMinimum;
     
 public:
     MockUser() {};
     ~MockUser() {};
     
-    void setNutritionMinima(const std::vector<double>& nutrition) {};
-    const std::vector<double>& getNutritionMinima() const { return m_nutritionMinima; };
+    void setNutritionMinima(const std::vector<double>& nutrition){m_nutritionMinimum = nutrition;}
+    const std::vector<double>& getNutritionMinima() const { return m_nutritionMinimum; };
 
     Json::Value toJson() const { return Json::Value{}; };
     void readFromJson(const Json::Value& personObj) {};
