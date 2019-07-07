@@ -101,6 +101,12 @@ public:
 
     double getAmount() const { return m_amount; }
     double getCost() const { return m_food->getCost(); }
+    double getMin() const {return m_food->getMin(); }
+    double getMax() const {return m_food->getMax(); }
+    const std::vector<double>& getNutritionValues() const { return m_food->getNutritionValues(); }
+    unsigned getNumberOfNutritions() const { return m_food->getNumberOfNutritions(); }
+
+    void setName(const std::string& name){ m_food->setName(name); }
 
     Json::Value toJson() const;
     void readFromJson(const Json::Value& jsonObject);
@@ -117,7 +123,13 @@ public:
 
     double getAmount() const {return m_food->getAmount(); }
     double getCost() const { return m_cost; }
+    double getMin() const {return m_food->getMin(); }
+    double getMax() const {return m_food->getMax(); }
+    const std::vector<double>& getNutritionValues() const { return m_food->getNutritionValues(); }
+    unsigned getNumberOfNutritions() const { return m_food->getNumberOfNutritions(); }
 
+    void setName(const std::string& name){ m_food->setName(name); }
+    
     Json::Value toJson() const;
     void readFromJson(const Json::Value& jsonObject);
 };
