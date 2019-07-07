@@ -5,6 +5,7 @@
 #include "store.hpp"
 #include "food.hpp"
 #include "store.hpp"
+#include "solver.hpp"
 
 BOOST_AUTO_TEST_SUITE( integrationtest_analyzer )
 

@@ -6,7 +6,7 @@ LDFLAGSTEST = -lboost_unit_test_framework
 # INCTEST = -I /home/jvolmer/bin/turtle_1.3.1/include
 
 TARGETS = main.x
-OBJECTS = food.o store.o person.o solver.o analyzer.o
+OBJECTS = food.o store.o person.o solver.o analyzer.o specialFunctions.o
 
 TESTS = food.test store.test person.test solver.test analyzer.test
 INTTESTS = analyzer_integration.test
