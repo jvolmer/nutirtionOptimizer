@@ -43,12 +43,12 @@ BOOST_AUTO_TEST_CASE( getVectorPropertyMin )
     Food food1{"moehre", {4.1, 2}, 1.1, 9};
     Food food2{"brot", {5, 3}, 1, 9};
 
-    std::vector<double> actual = {food1.getMin(), food2.getMin()};
+    const std::vector<double> actual = {food1.getMin(), food2.getMin()};
 
     store.addGood(std::move(food1));
     store.addGood(std::move(food2));
     
-    std::vector<double> expected{store.getFoodPropertyVector("min")};
+    const std::vector<double> expected{store.getFoodPropertyVector("min")};
 
     BOOST_TEST( expected == actual );
 }
@@ -59,12 +59,12 @@ BOOST_AUTO_TEST_CASE( getVectorVectorPropertyNutrition )
     Food food1{"moehre", {4.1, 2}, 1.1, 9};
     Food food2{"brot", {5, 3}, 1, 9};
 
-    std::vector<std::vector<double>> actual{food1.getNutritionValues(), food2.getNutritionValues()};
+    const std::vector<std::vector<double>> actual{{4.1, 2}, {5, 3}};
 
     store.addGood(std::move(food1));
     store.addGood(std::move(food2));
     
-    std::vector<std::vector<double>> expected{store.getFoodNutritionValues()};
+    const std::vector<std::vector<double>> expected{store.getFoodNutritionValues()};
 
     BOOST_TEST( expected == actual);
 }
@@ -79,12 +79,44 @@ BOOST_AUTO_TEST_CASE( amountDecorator )
     FoodStore store{"leckerSchmecker"};
     Food food{"moehre", {4.1, 2}, 1.1, 9};
 
-    std::vector<double> actual{10};
+    const std::vector<double> actual{10};
 
     store.addGood(std::move(food));
     store.decorateWithAmount(actual);
 
-    std::vector<double> expected{store.getFoodPropertyVector("amount")};
+    const std::vector<double> expected{store.getFoodPropertyVector("amount")};
+    
+    BOOST_TEST( expected == actual );
+}
+
+BOOST_AUTO_TEST_CASE( costDecoratorForTwoFoods )
+{
+    FoodStore store{"leckerSchmecker"};
+    Food food{"moehre", {4.1, 2}, 1.1, 9};
+    Food food2{"banane", {3, 10}, 1.1, 9};
+
+    const std::vector<double> actual{10, 11};
+
+    store.addGood(std::move(food));
+    store.addGood(std::move(food2));
+    store.decorateWithCost(actual);
+
+    const std::vector<double> expected{store.getFoodPropertyVector("cost")};
+    
+    BOOST_TEST( expected == actual );
+}
+
+BOOST_AUTO_TEST_CASE( costDecoratorGetNutritions )
+{
+    FoodStore store{"leckerSchmecker"};
+    Food food{"moehre", {4.1, 2}, 1.1, 9};
+
+    const std::vector<std::vector<double>> actual{{4.1, 2}};
+    
+    store.addGood(std::move(food));
+    store.decorateWithCost({11});
+
+    const std::vector<std::vector<double>> expected{store.getFoodNutritionValues()};
     
     BOOST_TEST( expected == actual );
 }
