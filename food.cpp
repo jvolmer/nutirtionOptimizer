@@ -88,6 +88,16 @@ Amount::Amount(std::unique_ptr<Food> food, double amount):
 {
 }
 
+std::vector<double> Amount::computeOptimizedNutritions()
+{
+    std::vector<double> optimizedNutritions;
+    for (const auto& nutrition : getNutritionValues())
+    {
+        optimizedNutritions.push_back(nutrition * m_amount);
+    }
+    return optimizedNutritions;
+}
+
 Json::Value Amount::toJson() const
 {
     Json::Value foodOut;

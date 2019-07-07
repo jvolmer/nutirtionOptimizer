@@ -23,7 +23,9 @@ public:
     virtual unsigned getNumberOfNutritions() const = 0;
 
     virtual void setName(const std::string& name) = 0;
-    
+
+    virtual std::vector<double> computeOptimizedNutritions() = 0;
+
     virtual Json::Value toJson() const = 0;
     virtual void readFromJson(const Json::Value& foodObj) = 0;
     
@@ -55,7 +57,9 @@ public:
     unsigned getNumberOfNutritions() const { return m_nutritionValues.size(); }
     
     void setName(const std::string& name){ m_name = name; }    
-    
+
+    std::vector<double> computeOptimizedNutritions() {return {};}
+
     Json::Value toJson() const;
     void readFromJson(const Json::Value& foodObj);
 };
@@ -77,6 +81,8 @@ public:
     unsigned getNumberOfNutritions() const {return m_nutritionValues.size();}
     
     void setName(const std::string& name) {};
+
+    std::vector<double> computeOptimizedNutritions() {return {};}
 
     Json::Value toJson() const {return Json::Value{};}
     void readFromJson(const Json::Value& foodObj) {};
@@ -108,6 +114,8 @@ public:
 
     void setName(const std::string& name){ m_food->setName(name); }
 
+    std::vector<double> computeOptimizedNutritions();
+    
     Json::Value toJson() const;
     void readFromJson(const Json::Value& jsonObject);
 };
@@ -129,6 +137,8 @@ public:
     unsigned getNumberOfNutritions() const { return m_food->getNumberOfNutritions(); }
 
     void setName(const std::string& name){ m_food->setName(name); }
+
+    std::vector<double> computeOptimizedNutritions() {return {};}
     
     Json::Value toJson() const;
     void readFromJson(const Json::Value& jsonObject);
