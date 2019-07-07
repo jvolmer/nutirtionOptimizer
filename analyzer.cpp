@@ -11,11 +11,11 @@ void Analyzer::computeFoodPlan()
 {
     m_solver->setProblemCoefficient( m_store->getFoodPropertyVector("cost") );
     m_solver->setConstraintCoefficients( m_store->getFoodNutritionValues() );
+
     m_solver->setStructuralBound(
         m_store->getFoodPropertyVector("min"),
         m_store->getFoodPropertyVector("max")
         );
-    
     // for (unsigned i=0; i<cost.size(); i++)
     // {
     //     m_solver->addProblemCoefficient(cost[i]);
@@ -24,6 +24,7 @@ void Analyzer::computeFoodPlan()
     // }
 
     m_solver->setAuxiliaryBound( m_person->getNutritionMinima(), {0});
+
     // for (double nutrition : nutritionMinima)
     //     m_solver->addAuxiliaryBound({GLP_LO, nutrition, 0.});
 

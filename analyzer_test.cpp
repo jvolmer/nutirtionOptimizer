@@ -1,7 +1,6 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE analyzertest
 #include <boost/test/unit_test.hpp>
-#include <memory>
 #include "analyzer.hpp"
 #include "solver.hpp"
 #include "store.hpp"
@@ -16,7 +15,7 @@ BOOST_AUTO_TEST_CASE( testCallToSolver_UserNutritionMinimaIsWrittenToSolverAmoun
     store->addGood({"PureNutrition2", {0, 1, 0}, .5, 100});
     
     auto user = std::make_unique<MockUser>();
-    std::vector<double> expectedAmount = {1., 2.};
+    const std::vector<double> expectedAmount = {1., 2.};
     user->setNutritionMinima(expectedAmount);
     
     auto solver = std::make_unique<MockSolver>();

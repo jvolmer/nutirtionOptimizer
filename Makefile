@@ -56,7 +56,7 @@ analyzer.test : analyzer_test.o analyzer.o person.o store.o solver.o food.o spec
 	@./$@ #--log_level=test_suite
 	@echo 
 
-analyzer_integration.test : analyzer_integrationtest.o analyzer.o person.o store.o solver.o food.o
+analyzer_integration.test : analyzer_integrationtest.o analyzer.o person.o store.o solver.o food.o specialFunctions.o
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
 	@echo Running $@
 	@./$@ #--log_level=test_suite

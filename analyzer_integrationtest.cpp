@@ -18,19 +18,21 @@ BOOST_AUTO_TEST_CASE( nutritionsAreSeperateFoods )
     store->addGood({"Eiweiss", {1, 0, 0}, 0, 1000});
     store->addGood({"MUFA", {0, 1, 0}, 0, 1000});
     store->addGood({"Eicosapentaensaeure", {0, 0, 1}, 0, 1000});
- 
-    auto julia = std::make_unique<NutritionDemandingUser>("Julia");
-    julia->setNutritionMinima({1, 1, 1});
-
-    auto solver = std::make_shared<GnuLinearSolver>(GLP_MIN);
+    std::vector<double> costs{.4, .3, .5};
+    store->decorateWithCost(std::move(costs));
     
-    Analyzer analyzer(store, julia, solver);
+    auto user = std::make_unique<NutritionDemandingUser>("Julia");
+    user->setNutritionMinima({1, 1, 1});
+
+    auto solver = std::make_unique<GnuLinearSolver>(GLP_MIN);
+    
+    Analyzer analyzer(std::move(store), std::move(user), std::move(solver));
     analyzer.computeFoodPlan();
 
-    std::vector<double> expectedValue{1, 1, 1};
-
-    const std::vector<double>& foodAmount = analyzer.getAmounts();
-    BOOST_TEST( foodAmount == expectedValue, boost::test_tools::per_element() );
+    const std::vector<double> expectedAmount{1, 1, 1};
+    const std::vector<double>& actualAmount = analyzer.getAmounts();
+    
+    BOOST_TEST( expectedAmount[1] == actualAmount[1] );
 }
 
 
