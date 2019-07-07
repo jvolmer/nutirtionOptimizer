@@ -25,7 +25,9 @@ public:
 
     virtual void decorateWithCost(const std::vector<double>& newVariableVector) = 0;
     virtual void decorateWithAmount(const std::vector<double>& newVariableVector) = 0;
-    
+
+    virtual std::vector<double> computeOptimizedTotalNutritions() = 0;
+
     virtual void readFromJson(const Json::Value& storeObj) = 0;
     virtual Json::Value toJson() const = 0;
 };
@@ -55,6 +57,8 @@ public:
 
     void decorateWithCost(const std::vector<double>& newVariableVector);
     void decorateWithAmount(const std::vector<double>& newVariableVector);
+
+    std::vector<double> computeOptimizedTotalNutritions();
     
     void readFromJson(const Json::Value& storeObj);
     Json::Value toJson() const;
@@ -84,6 +88,8 @@ public:
 
     void decorateWithCost(const std::vector<double>& newVariableVector){};
     void decorateWithAmount(const std::vector<double>& newVariableVector){};
+
+    std::vector<double> computeOptimizedTotalNutritions(){return {};}
 
     void readFromJson(const Json::Value& storeObj) {};
     Json::Value toJson() const { return Json::Value{}; };

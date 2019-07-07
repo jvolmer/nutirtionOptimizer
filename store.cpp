@@ -62,6 +62,21 @@ void FoodStore::decorateWithAmount(const std::vector<double>& newVariableVector)
             m_food[i] = std::make_unique<Amount>(std::move(m_food[i]), newVariableVector[i]);
 }
 
+std::vector<double> FoodStore::computeOptimizedTotalNutritions()
+{
+    std::vector<double> optimizedTotalNutritions{0};
+    optimizedTotalNutritions.resize(getNumberOfNutritions(), 0);
+
+    std::vector<double> optimizedNutritions;
+    for (const auto& food : m_food)
+    {
+        optimizedNutritions = food->computeOptimizedNutritions();
+        for (unsigned i=0; i<getNumberOfNutritions(); i++)
+            optimizedTotalNutritions[i] += optimizedNutritions[i];
+    }
+    return optimizedTotalNutritions;
+}
+
 void FoodStore::readFromJson(const Json::Value& storeObj)
 {
     m_name = storeObj["name"].asString();
@@ -75,19 +90,6 @@ void FoodStore::readFromJson(const Json::Value& storeObj)
         addGood(std::move(food));
     }
 }
-
-// void FoodStore::readFromJson(std::unique_prt<Food> foodPtr, const Json::Value& storeObj)
-// {
-//     m_name = storeObj["name"].asString();
-
-//     clearFood();
-//     const Json::Value& foods = storeObj["foods"];
-//     for (const Json::Value& foodObj : foods)
-//     {
-//         foodPtr.readFromJson(foodObj);
-//         addGood(std::move(foodPtr));
-//     }
-// }
 
 Json::Value FoodStore::toJson() const
 {
