@@ -22,7 +22,7 @@ public:
     const std::vector<double>& getAmounts() const { return m_solver->getResultVariables(); }
     void computeFoodPlan();
 
-    // Json::Value toJson() const;
+    Json::Value toJson() const;
 };
 
 

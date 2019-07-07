@@ -8,10 +8,6 @@
 
 BOOST_AUTO_TEST_SUITE( integrationtest_analyzer )
 
-BOOST_AUTO_TEST_CASE( test )
-{
-}
-
 BOOST_AUTO_TEST_CASE( nutritionsAreSeperateFoods )
 {
     auto store = std::make_unique<FoodStore>("Kueche");
@@ -22,18 +18,22 @@ BOOST_AUTO_TEST_CASE( nutritionsAreSeperateFoods )
     store->decorateWithCost(std::move(costs));
     
     auto user = std::make_unique<NutritionDemandingUser>("Julia");
-    user->setNutritionMinima({1, 1, 1});
+    const std::vector<double> nutritionMinima {1, 2, 1};
+    user->setNutritionMinima(nutritionMinima);
 
     auto solver = std::make_unique<GnuLinearSolver>(GLP_MIN);
     
     Analyzer analyzer(std::move(store), std::move(user), std::move(solver));
     analyzer.computeFoodPlan();
 
-    const std::vector<double> expectedAmount{1, 1, 1};
+    const std::vector<double> expectedAmount = nutritionMinima;
     const std::vector<double>& actualAmount = analyzer.getAmounts();
     
     BOOST_TEST( expectedAmount[1] == actualAmount[1] );
-}
 
+    std::ofstream fileOut("analyzer.out");
+    fileOut << analyzer.toJson();
+    std::cout << "> Wrote Analyzer to analyzer.out" << std::endl;
+}
 
 BOOST_AUTO_TEST_SUITE_END( )
