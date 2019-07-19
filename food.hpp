@@ -1,10 +1,8 @@
 #ifndef FOOD_H
 #define FOOD_H
-#include <string>
-#include <vector>
-#include <iostream>
 #include <json/json.h>
-#include "specialFunctions.hpp"
+#include <vector>
+#include <string>
 
 enum class InputType{
     JSON

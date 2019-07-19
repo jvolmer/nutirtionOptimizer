@@ -1,4 +1,8 @@
 #include "person.hpp"
+#include <json/json.h>
+#include <vector>
+#include <string>
+#include <utility>
 
 NutritionDemandingUser::NutritionDemandingUser(std::string name, std::vector<double> nutritionMinimum):
     m_name {std::move(name)},

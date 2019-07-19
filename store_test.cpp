@@ -1,9 +1,13 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE storetest
+
+#include "food.hpp"
+#include "store.hpp"
+#include <json/json.h>
 #include <boost/test/unit_test.hpp>
 #include <utility>
-#include "store.hpp"
-#include "food.hpp"
+#include <fstream>
+#include <vector>
 
 BOOST_AUTO_TEST_SUITE (initialization)
 

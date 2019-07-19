@@ -1,11 +1,10 @@
 #ifndef STORE_H
 #define STORE_H
+#include "food.hpp"
+#include <json/json.h>
 #include <string>
 #include <vector>
-#include <memory>
-#include <fstream>
-#include <json/json.h>
-#include "food.hpp"
+#include <utility>
 
 class Store
 {

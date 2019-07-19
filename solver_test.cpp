@@ -1,7 +1,10 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE solvertest
-#include <boost/test/unit_test.hpp>
+
 #include "solver.hpp"
+#include <boost/test/unit_test.hpp>
+#include <vector>
+#include <utility>
 
 struct fixture
 {

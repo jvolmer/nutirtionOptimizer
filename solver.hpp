@@ -1,8 +1,9 @@
 #ifndef SOLVER_H
 #define SOLVER_H
+#include <glpk.h>
 #include <vector>
 #include <string>
-#include <glpk.h>
+#include <utility>
 
 class Bound
 {

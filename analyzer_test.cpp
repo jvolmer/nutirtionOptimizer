@@ -1,10 +1,13 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE analyzertest
-#include <boost/test/unit_test.hpp>
-#include "analyzer.hpp"
+
 #include "solver.hpp"
 #include "store.hpp"
 #include "person.hpp"
+#include "analyzer.hpp"
+#include <boost/test/unit_test.hpp>
+#include <memory>
+#include <vector>
 
 BOOST_AUTO_TEST_SUITE( analyzertest )
 

@@ -1,7 +1,8 @@
 #ifndef PERSON_H
 #define PERSON_H
+#include <json/json.h>
+#include <vector>
 #include <string>
-#include "food.hpp"
 
 class User
 {

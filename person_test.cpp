@@ -1,9 +1,11 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE persontest
+
+#include "person.hpp"
+#include <json/json.h>
 #include <boost/test/unit_test.hpp>
 #include <vector>
 #include <fstream>
-#include "person.hpp"
 
 BOOST_AUTO_TEST_SUITE( persontest )
 

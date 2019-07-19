@@ -1,10 +1,11 @@
 #ifndef ANALYZER_H
 #define ANALYZER_H
-#include <memory>
 #include "store.hpp"
 #include "person.hpp"
 #include "solver.hpp"
-#include "food.hpp"
+#include <json/json.h>
+#include <memory>
+#include <vector>
 
 class Analyzer{
 

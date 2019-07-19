@@ -1,4 +1,11 @@
+#include "store.hpp"
+#include "person.hpp"
+#include "solver.hpp"
 #include "analyzer.hpp"
+#include <json/json.h>
+#include <memory>
+#include <vector>
+#include <string>
 
 Analyzer::Analyzer(std::unique_ptr<Store> store, std::unique_ptr<User> person, std::unique_ptr<Solver> solver):
     m_store{std::move(store)},

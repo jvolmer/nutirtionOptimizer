@@ -1,4 +1,8 @@
 #include "solver.hpp"
+#include <glpk.h>
+#include <vector>
+#include <string>
+#include <utility>
 
 GnuLinearBound::GnuLinearBound(int type, double lower, double upper):
     m_type {type},

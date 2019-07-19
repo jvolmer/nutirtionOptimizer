@@ -1,4 +1,9 @@
+#include "food.hpp"
 #include "store.hpp"
+#include <json/json.h>
+#include <vector>
+#include <string>
+#include <utility>
 
 FoodStore::FoodStore(std::string name): //, std::vector<Food> foods):
     m_name {std::move(name)}

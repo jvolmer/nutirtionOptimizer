@@ -1,9 +1,12 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE foodtest
+
+#include "food.hpp"
+#include <json/json.h>
 #include <boost/test/unit_test.hpp>
 #include <string>
-#include <json/json.h>
-#include "food.hpp"
+#include <vector>
+#include <utility>
 
 BOOST_AUTO_TEST_SUITE (initialize_food)
 

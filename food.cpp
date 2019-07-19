@@ -1,4 +1,9 @@
 #include "food.hpp"
+#include "specialFunctions.hpp"
+#include <json/json.h>
+#include <vector>
+#include <string>
+#include <utility>
 
 Food::Food(std::string name, std::vector<double> nutritions, double min, double max):
     m_name {std::move(name)},
@@ -23,12 +28,6 @@ Food::Food(InputType inputType, const Json::Value& foodObj)
     if (inputType == InputType::JSON)
         readFromJson(foodObj);
 }
-
-// void Food::printAmount() const
-// {
-//     std::cout << m_name << "\t\t" << m_amount << " g" << std::endl;
-// }
-
 
 bool operator== (const Food& lhs, const Food& rhs)
 {
