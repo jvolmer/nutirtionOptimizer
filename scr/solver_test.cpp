@@ -5,6 +5,7 @@
 #include <boost/test/unit_test.hpp>
 #include <vector>
 #include <utility>
+#include <limits>
 
 struct fixture
 {
@@ -32,75 +33,79 @@ struct fixture
 
 BOOST_FIXTURE_TEST_SUITE( solvertest, fixture )
 
-BOOST_AUTO_TEST_CASE( minimizationWithOneVariableAndNoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
+BOOST_AUTO_TEST_CASE( minimizationWithOneVariable_NoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
 {
-    double xCoefficient = 2;
-    std::vector<double> variableCoefficient{xCoefficient};
-    double xLowerBound = 1;    
-    std::vector<GnuLinearBound> constraintBound{{GLP_LO, xLowerBound, 0.}};
+    double infinity = std::numeric_limits<double>::infinity();
+    std::vector<double> problemCoefficient{2};
+    double xLowerBound = 1;
 
-    std::vector<std::vector<double>> constraintCoefficient{{1}};
-    std::vector<GnuLinearBound> variableBound{{GLP_LO, xLowerBound, 0}};
-
-    GnuLinearSolver solver{GLP_MIN, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
+    GnuLinearSolver solver{GLP_MIN};
+    solver.setProblemCoefficient(problemCoefficient);
+    solver.setConstraintCoefficients({{1}});
+    solver.setStructuralBound({xLowerBound}, {infinity});
+    solver.setAuxiliaryBound({xLowerBound}, {infinity});
 
     solve(solver);
 
     expectedVariable = {xLowerBound};
 
-    verifyExpectedResults(std::move(variableCoefficient));
+    verifyExpectedResults(std::move(problemCoefficient));
 }
 
-BOOST_AUTO_TEST_CASE( maximizationWithOneVariableAndNoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
+BOOST_AUTO_TEST_CASE( maximizationWithOneVariable_NoAdditionalInequalityConstraints, * boost::unit_test::tolerance(1e-10))
 {
-    double xCoefficient = 2;
-    std::vector<double> variableCoefficient{xCoefficient};
+    double infinity = std::numeric_limits<double>::infinity();
+    std::vector<double> problemCoefficient{2};
     double xUpperBound = 10;
-    std::vector<GnuLinearBound> constraintBound{{GLP_UP, 0, xUpperBound}};
 
-    std::vector<std::vector<double>> constraintCoefficient{{1}};
-    std::vector<GnuLinearBound> variableBound{{GLP_UP, 0, xUpperBound}};
-
-    GnuLinearSolver solver{GLP_MAX, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
+    GnuLinearSolver solver{GLP_MAX};
+    solver.setProblemCoefficient(problemCoefficient);
+    solver.setConstraintCoefficients({{1}});
+    solver.setStructuralBound({infinity}, {xUpperBound});
+    solver.setAuxiliaryBound({infinity}, {xUpperBound});
 
     solve(solver);
 
     expectedVariable = {xUpperBound};
 
-    verifyExpectedResults(std::move(variableCoefficient));
+    verifyExpectedResults(std::move(problemCoefficient));
 }
 
-BOOST_AUTO_TEST_CASE( minimizationWithTwoVariablesAndOneAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
+BOOST_AUTO_TEST_CASE( minimizationWithTwoVariables_OneAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
 {
-    
-    std::vector<double> variableCoefficient{1, 1};
-    std::vector<std::vector<double>> constraintCoefficient{{1, 2}};
-    std::vector<GnuLinearBound> constraintBound{{GLP_LO, 1, 0.}};
-    std::vector<GnuLinearBound> variableBound{{GLP_LO, 0, 0}, {GLP_LO, 0, 0}};
 
-    GnuLinearSolver solver{GLP_MIN, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
+    double infinity = std::numeric_limits<double>::infinity();
+    std::vector<double> problemCoefficient{1, 1};
+    
+    GnuLinearSolver solver{GLP_MIN};
+    solver.setProblemCoefficient(problemCoefficient);
+    solver.setConstraintCoefficients({{1, 2}});
+    solver.setStructuralBound({0, 0}, {infinity, infinity});
+    solver.setAuxiliaryBound({1}, {infinity});
 
     solve(solver);
 
     expectedVariable = {0, .5};
 
-    verifyExpectedResults(std::move(variableCoefficient));
+    verifyExpectedResults(std::move(problemCoefficient));
 }
 
-BOOST_AUTO_TEST_CASE( maximizationWithTwoVariablesAndTwoAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
+BOOST_AUTO_TEST_CASE( maximizationWithTwoVariables_TwoAdditionalInequalityConstraint, * boost::unit_test::tolerance(1e-10))
 {
-    std::vector<double> variableCoefficient{.6, .5};
-    std::vector<std::vector<double>> constraintCoefficient{{1, 2}, {3, 1}};
-    std::vector<GnuLinearBound> constraintBound{{GLP_UP, 0, 1}, {GLP_UP, 0, 2}};
-    std::vector<GnuLinearBound> variableBound{{GLP_LO, 0, 0}, {GLP_LO, 0, 0}};
+    double infinity = std::numeric_limits<double>::infinity();
+    std::vector<double> problemCoefficient{.6, .5};
 
-    GnuLinearSolver solver{GLP_MAX, variableCoefficient, std::move(constraintCoefficient), std::move(constraintBound), std::move(variableBound)};
+    GnuLinearSolver solver{GLP_MAX};
+    solver.setProblemCoefficient(problemCoefficient);
+    solver.setConstraintCoefficients({{1, 2}, {3, 1}});
+    solver.setStructuralBound({0, 0}, {infinity, infinity});
+    solver.setAuxiliaryBound({infinity, infinity}, {1, 2});
 
     solve(solver);
 
     expectedVariable = {.6, .2};
 
-    verifyExpectedResults(std::move(variableCoefficient));
+    verifyExpectedResults(std::move(problemCoefficient));
 
 }
 

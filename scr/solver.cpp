@@ -3,12 +3,26 @@
 #include <vector>
 #include <string>
 #include <utility>
+#include <cmath>
 
 GnuLinearBound::GnuLinearBound(int type, double lower, double upper):
     m_type {type},
     m_lower {lower},
     m_upper {upper}
 {
+}
+
+GnuLinearBound GnuLinearBound::getBound(double lower, double upper)
+{
+    if (std::isinf(lower) and std::isinf(upper))
+        return {GLP_FR, 0, 0};
+    else if (std::isinf(upper))
+        return {GLP_LO, lower, 0};
+    else if (std::isinf(lower))
+        return {GLP_UP, 0, upper};
+    else if (lower == upper)
+        return {GLP_FX, lower, upper};
+    else return {GLP_DB, lower, upper};
 }
 
 GnuLinearSolver::GnuLinearSolver(int problemType, std::vector<double> problemCoefficient, std::vector<std::vector<double>> constraintCoefficient, std::vector<GnuLinearBound> auxiliaryBound, std::vector<GnuLinearBound> structuralBound):
@@ -35,13 +49,13 @@ GnuLinearSolver::~GnuLinearSolver()
 void GnuLinearSolver::setStructuralBound(std::vector<double> minBounds, std::vector<double> maxBounds)
 {
     for (unsigned i=0; i<minBounds.size(); i++)
-        addStructuralBound({GLP_DB, minBounds[i], maxBounds[i]});        
+        m_structuralBound.push_back(GnuLinearBound::getBound(minBounds[i], maxBounds[i]));
 }
 
 void GnuLinearSolver::setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds)
 {
     for (unsigned i=0; i<minBounds.size(); i++)
-        addAuxiliaryBound({GLP_LO, minBounds[i], 0.});        
+        m_auxiliaryBound.push_back(GnuLinearBound::getBound(minBounds[i], maxBounds[i]));
 }
 
             
