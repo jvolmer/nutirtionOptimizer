@@ -26,6 +26,8 @@ BOOST_AUTO_TEST_CASE( nutritionsAreSeperateFoods )
     auto user = std::make_unique<NutritionDemandingUser>("Julia");
     const std::vector<double> nutritionMinima {1, 2, 1};
     user->setNutritionMinima(nutritionMinima);
+    const std::vector<double> nutritionMaxima {10, 20, 50};
+    user->setNutritionMaxima(nutritionMaxima);
 
     auto solver = std::make_unique<GnuLinearSolver>(GLP_MIN);
     
