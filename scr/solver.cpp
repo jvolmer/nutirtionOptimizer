@@ -121,11 +121,7 @@ Json::Value GnuLinearSolver::toJson() const
     Json::Value structuralBound;
     for (unsigned int i=0; i<m_structuralBound.size(); i++)
     {
-        Json::Value bound;
-        bound["type"] = m_structuralBound[i].getType();
-        bound["lower"] = m_structuralBound[i].getLower();
-        bound["upper"] = m_structuralBound[i].getUpper();
-        structuralBound["structuralVariable" + std::to_string(i)] = bound;
+        structuralBound["structuralVariable" + std::to_string(i)] = m_structuralBound[i].toJson();
     }
     out["structuralBounds"] = structuralBound;
 
