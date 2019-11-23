@@ -6,11 +6,11 @@ LDFLAGSTEST = -lboost_unit_test_framework
 # INCTEST = -I /home/jvolmer/bin/turtle_1.3.1/include
 
 TARGETS = main.x
-OBJECTS = food.o store.o person.o solver.o analyzer.o specialFunctions.o
+OBJECTS = food.o store.o person.o solver.o bound.o analyzer.o specialFunctions.o
 
-TESTS = food.test store.test person.test solver.test analyzer.test
+TESTS = food.test store.test person.test solver.test bound.test analyzer.test
 INTTESTS = analyzer_integration.test
-TESTOBJECTS = food_test.o store_test.o person_test.o solver_test.o analyzer_test.o analyzer_integrationtest.o
+TESTOBJECTS = food_test.o store_test.o person_test.o solver_test.o bound_test.o analyzer_test.o analyzer_integrationtest.o
 
 all: $(TARGETS)
 
@@ -50,13 +50,19 @@ person.test : person_test.o person.o specialFunctions.o
 	@./$@ #--log_level=test_suite
 	@echo 
 
-analyzer.test : analyzer_test.o analyzer.o person.o store.o solver.o food.o specialFunctions.o
+solver.test : solver_test.o solver.o bound.o
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
 	@echo Running $@
 	@./$@ #--log_level=test_suite
 	@echo 
 
-analyzer_integration.test : analyzer_integrationtest.o analyzer.o person.o store.o solver.o food.o specialFunctions.o
+analyzer.test : analyzer_test.o analyzer.o person.o store.o solver.o bound.o food.o specialFunctions.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
+	@echo Running $@
+	@./$@ #--log_level=test_suite
+	@echo 
+
+analyzer_integration.test : analyzer_integrationtest.o analyzer.o person.o store.o solver.o bound.o food.o specialFunctions.o
 	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGSTEST) $(LDFLAGS) $(INCTEST)
 	@echo Running $@
 	@./$@ #--log_level=test_suite
@@ -68,9 +74,10 @@ analyzer_integration.test : analyzer_integrationtest.o analyzer.o person.o store
 food_test.o : food.hpp specialFunctions.hpp
 store_test.o : store.hpp food.hpp specialFunctions.hpp
 person_test.o : person.hpp
-solver_test.o : solver.hpp
-analyzer_integrationtest.o : analyzer.hpp store.hpp solver.hpp person.hpp food.hpp specialFunctions.hpp
-analyzer_test.o : analyzer.hpp solver.hpp store.hpp person.hpp food.hpp specialFunctions.hpp
+solver_test.o : solver.hpp bound.hpp
+bound_test.o : bound.hpp
+analyzer_integrationtest.o : analyzer.hpp store.hpp solver.hpp bound.hpp person.hpp food.hpp specialFunctions.hpp
+analyzer_test.o : analyzer.hpp solver.hpp bound.hpp store.hpp person.hpp food.hpp specialFunctions.hpp
 
 # $(CXX) $(CXXFLAGS) -c $< -o $@ $(INCTEST)
 
@@ -78,7 +85,8 @@ analyzer_test.o : analyzer.hpp solver.hpp store.hpp person.hpp food.hpp specialF
 food.o : food.hpp specialFunctions.hpp
 store.o : store.hpp food.hpp specialFunctions.hpp
 person.o : person.hpp specialFunctions.hpp
-solver.o : solver.hpp
+solver.o : solver.hpp bound.hpp
+bound.o : bound.hpp
 analyzer.o : analyzer.hpp store.hpp person.hpp solver.hpp food.hpp specialFunctions.hpp
 specialFunctions.o : specialFunctions.hpp
 

@@ -1,3 +1,4 @@
+#include "bound.hpp"
 #include "solver.hpp"
 #include <limits>
 #include <glpk.h>
@@ -8,47 +9,6 @@
 #include <json/json.h>
 #include <iostream>
 
-GnuLinearBound::GnuLinearBound(double lower, double upper)
-{
-    if (std::isinf(lower) and std::isinf(upper))
-        m_type = GLP_FR;
-    else if (std::isinf(upper))
-        m_type = GLP_LO;
-    else if (std::isinf(lower))
-        m_type = GLP_UP;
-    else if (lower == upper)
-        m_type = GLP_FX;
-
-    else
-        m_type = GLP_DB;
-
-    if (std::isinf(lower))
-        m_lower = 0;
-    else
-        m_lower = lower;
-    
-    if (std::isinf(upper))
-        m_upper = 0;
-    else
-        m_upper = upper;
-}
-
-
-Json::Value GnuLinearBound::toJson() const
-{
-    std::array<std::string, 5> boundType{"GLP_FR", "GLP_LO", "GLP_UP", "GLP_DB", "GLP_FX"};
-    Json::Value bound;
-    bound["type"] = boundType[m_type-1];
-    if (m_type == GLP_FR || m_type == GLP_UP)
-        bound["lower"] = -std::numeric_limits<double>::infinity();
-    else
-        bound["lower"] = m_lower;
-    if (m_type == GLP_FR || m_type == GLP_LO)
-        bound["upper"] = std::numeric_limits<double>::infinity();
-    else
-        bound["upper"] = m_upper;
-    return bound;
-}
 
 GnuLinearSolver::GnuLinearSolver(int problemType, std::vector<double> problemCoefficient, std::vector<std::vector<double>> constraintCoefficient, std::vector<GnuLinearBound> auxiliaryBound, std::vector<GnuLinearBound> structuralBound):
     m_problemObject {glp_create_prob()},
@@ -75,7 +35,6 @@ void GnuLinearSolver::setStructuralBound(std::vector<double> minBounds, std::vec
 {
     for (unsigned i=0; i<minBounds.size(); i++)
         m_structuralBound.push_back(GnuLinearBound(minBounds[i], maxBounds[i]));
-    }
 }
 
 void GnuLinearSolver::setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds)
