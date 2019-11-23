@@ -1,28 +1,53 @@
 #include "solver.hpp"
+#include <limits>
 #include <glpk.h>
 #include <vector>
 #include <string>
 #include <utility>
 #include <cmath>
+#include <json/json.h>
+#include <iostream>
 
-GnuLinearBound::GnuLinearBound(int type, double lower, double upper):
-    m_type {type},
-    m_lower {lower},
-    m_upper {upper}
-{
-}
-
-GnuLinearBound GnuLinearBound::getBound(double lower, double upper)
+GnuLinearBound::GnuLinearBound(double lower, double upper)
 {
     if (std::isinf(lower) and std::isinf(upper))
-        return {GLP_FR, 0, 0};
+        m_type = GLP_FR;
     else if (std::isinf(upper))
-        return {GLP_LO, lower, 0};
+        m_type = GLP_LO;
     else if (std::isinf(lower))
-        return {GLP_UP, 0, upper};
+        m_type = GLP_UP;
     else if (lower == upper)
-        return {GLP_FX, lower, upper};
-    else return {GLP_DB, lower, upper};
+        m_type = GLP_FX;
+
+    else
+        m_type = GLP_DB;
+
+    if (std::isinf(lower))
+        m_lower = 0;
+    else
+        m_lower = lower;
+    
+    if (std::isinf(upper))
+        m_upper = 0;
+    else
+        m_upper = upper;
+}
+
+
+Json::Value GnuLinearBound::toJson() const
+{
+    std::array<std::string, 5> boundType{"GLP_FR", "GLP_LO", "GLP_UP", "GLP_DB", "GLP_FX"};
+    Json::Value bound;
+    bound["type"] = boundType[m_type-1];
+    if (m_type == GLP_FR || m_type == GLP_UP)
+        bound["lower"] = -std::numeric_limits<double>::infinity();
+    else
+        bound["lower"] = m_lower;
+    if (m_type == GLP_FR || m_type == GLP_LO)
+        bound["upper"] = std::numeric_limits<double>::infinity();
+    else
+        bound["upper"] = m_upper;
+    return bound;
 }
 
 GnuLinearSolver::GnuLinearSolver(int problemType, std::vector<double> problemCoefficient, std::vector<std::vector<double>> constraintCoefficient, std::vector<GnuLinearBound> auxiliaryBound, std::vector<GnuLinearBound> structuralBound):
@@ -49,13 +74,14 @@ GnuLinearSolver::~GnuLinearSolver()
 void GnuLinearSolver::setStructuralBound(std::vector<double> minBounds, std::vector<double> maxBounds)
 {
     for (unsigned i=0; i<minBounds.size(); i++)
-        m_structuralBound.push_back(GnuLinearBound::getBound(minBounds[i], maxBounds[i]));
+        m_structuralBound.push_back(GnuLinearBound(minBounds[i], maxBounds[i]));
+    }
 }
 
 void GnuLinearSolver::setAuxiliaryBound(std::vector<double> minBounds, std::vector<double> maxBounds)
 {
     for (unsigned i=0; i<minBounds.size(); i++)
-        m_auxiliaryBound.push_back(GnuLinearBound::getBound(minBounds[i], maxBounds[i]));
+        m_auxiliaryBound.push_back(GnuLinearBound(minBounds[i], maxBounds[i]));
 }
 
             
@@ -105,4 +131,51 @@ void GnuLinearSolver::solve()
     m_resultValue = glp_get_obj_val(m_problemObject);
     for (unsigned i=0; i<m_structuralBound.size(); i++)
         m_resultVariable.push_back(glp_get_col_prim(m_problemObject, i+1));
+}
+
+Json::Value GnuLinearSolver::toJson() const
+{
+    Json::Value out;
+
+    Json::Value problemCoefficient;
+    for (unsigned int i=0; i<m_problemCoefficient.size(); i++)
+        problemCoefficient["variable" + std::to_string(i)] = m_problemCoefficient[i];
+    out["problemCoefficient"] = problemCoefficient;
+
+    Json::Value constraintCoefficients;
+    for (unsigned int i=0; i<m_constraintCoefficient.size(); i++)
+    {
+        Json::Value coefficient;
+        for (unsigned int j=0; j<m_constraintCoefficient[i].size(); j++)
+            coefficient["variable" + std::to_string(j)] = m_constraintCoefficient[i][j];
+        constraintCoefficients["auxiliaryVariable" + std::to_string(i)] = coefficient;
+    }
+    out["constraintCoefficients"] = constraintCoefficients;
+
+    Json::Value auxiliaryBound;
+    for (unsigned int i=0; i<m_auxiliaryBound.size(); i++)
+    {
+        auxiliaryBound["auxiliaryVariable" + std::to_string(i)] = m_auxiliaryBound[i].toJson();
+    }
+    out["auxiliaryBounds"] = auxiliaryBound;
+
+    Json::Value structuralBound;
+    for (unsigned int i=0; i<m_structuralBound.size(); i++)
+    {
+        Json::Value bound;
+        bound["type"] = m_structuralBound[i].getType();
+        bound["lower"] = m_structuralBound[i].getLower();
+        bound["upper"] = m_structuralBound[i].getUpper();
+        structuralBound["structuralVariable" + std::to_string(i)] = bound;
+    }
+    out["structuralBounds"] = structuralBound;
+
+    Json::Value result;
+    for (unsigned int i=0; i<m_resultVariable.size(); i++)
+        result["variable" + std::to_string(i)] = m_resultVariable[i];
+    out["result"] = result;
+    
+    out["resultMinimum"] = m_resultValue;
+
+    return out;
 }

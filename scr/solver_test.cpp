@@ -3,9 +3,12 @@
 
 #include "solver.hpp"
 #include <boost/test/unit_test.hpp>
+#include <cmath>
 #include <vector>
 #include <utility>
 #include <limits>
+#include <iostream>
+
 
 struct fixture
 {
@@ -24,12 +27,50 @@ struct fixture
     
     void verifyExpectedResults(const std::vector<double>& variableCoefficient)
     {
-        expectedValue = variableCoefficient[0] * expectedVariable[0] + variableCoefficient[1] * expectedVariable[1];
-
+        expectedValue = 0;
+        for (unsigned i=0; i<variableCoefficient.size(); i++)
+            expectedValue += variableCoefficient[i] * expectedVariable[i];
+        
         BOOST_TEST( expectedVariable == *actualVariableAddress, boost::test_tools::per_element());
         BOOST_TEST( expectedValue == actualValue );
     }
 };
+
+
+BOOST_AUTO_TEST_SUITE( bound )
+
+BOOST_AUTO_TEST_CASE( doubleBoundInitialization, * boost::unit_test::tolerance(1e-10))
+{
+    double lowerBound = 1;
+    double upperBound = 2;
+    GnuLinearBound bound{lowerBound, upperBound};
+    BOOST_TEST( bound.getLower() == lowerBound );
+    BOOST_TEST( bound.getUpper() == upperBound );
+    BOOST_TEST( bound.getType() == GLP_DB );
+}
+
+BOOST_AUTO_TEST_CASE( lowerBoundInitialization, * boost::unit_test::tolerance(1e-10))
+{
+    double lowerBound = 1;
+    double upperBound = std::numeric_limits<double>::infinity();
+    GnuLinearBound bound{lowerBound, upperBound};
+    BOOST_TEST( bound.getLower() == lowerBound );
+    BOOST_TEST( bound.getUpper() == 0 );
+    BOOST_TEST( bound.getType() == GLP_LO );
+}
+
+BOOST_AUTO_TEST_CASE( upperBoundInitialization, * boost::unit_test::tolerance(1e-10))
+{
+    double lowerBound = std::numeric_limits<double>::infinity();
+    double upperBound = 10;
+    GnuLinearBound bound{lowerBound, upperBound};
+    BOOST_TEST( bound.getLower() == 0 );
+    BOOST_TEST( bound.getUpper() == upperBound );
+    BOOST_TEST( bound.getType() == GLP_UP );
+}
+
+BOOST_AUTO_TEST_SUITE_END( )
+
 
 BOOST_FIXTURE_TEST_SUITE( solvertest, fixture )
 
@@ -44,7 +85,7 @@ BOOST_AUTO_TEST_CASE( minimizationWithOneVariable_NoAdditionalInequalityConstrai
     solver.setConstraintCoefficients({{1}});
     solver.setStructuralBound({xLowerBound}, {infinity});
     solver.setAuxiliaryBound({xLowerBound}, {infinity});
-
+    
     solve(solver);
 
     expectedVariable = {xLowerBound};
@@ -63,7 +104,7 @@ BOOST_AUTO_TEST_CASE( maximizationWithOneVariable_NoAdditionalInequalityConstrai
     solver.setConstraintCoefficients({{1}});
     solver.setStructuralBound({infinity}, {xUpperBound});
     solver.setAuxiliaryBound({infinity}, {xUpperBound});
-
+    
     solve(solver);
 
     expectedVariable = {xUpperBound};
