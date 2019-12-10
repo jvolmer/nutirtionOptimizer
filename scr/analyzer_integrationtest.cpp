@@ -3,7 +3,6 @@
 
 #include "food.hpp"
 #include "store.hpp"
-#include "store.hpp"
 #include "solver.hpp"
 #include "analyzer.hpp"
 #include <boost/test/unit_test.hpp>

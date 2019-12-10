@@ -20,21 +20,20 @@ void Analyzer::computeFoodPlan()
     m_solver->setProblemCoefficient( m_store->getFoodPropertyVector("cost") );
     m_solver->setConstraintCoefficients( m_store->getFoodNutritionValues() );
 
-    m_solver->setStructuralBound(
+    m_solver->setAuxiliaryBound(
         m_person->getNutritionMinima(),
         m_person->getNutritionMaxima()
         );
 
-    m_solver->setAuxiliaryBound(
+    m_solver->setStructuralBound(
         m_store->getFoodPropertyVector("min"),
         m_store->getFoodPropertyVector("max")
         );
 
     m_solver->prepare();
     m_solver->solve();
-
+    
     m_store->decorateWithAmount( m_solver->getResultVariables() );
-
 }
 
 Json::Value Analyzer::toJson() const
