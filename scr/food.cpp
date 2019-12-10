@@ -91,9 +91,7 @@ std::vector<double> Amount::computeOptimizedNutritions()
 {
     std::vector<double> optimizedNutritions;
     for (const auto& nutrition : getNutritionValues())
-    {
         optimizedNutritions.push_back(nutrition * m_amount);
-    }
     return optimizedNutritions;
 }
 

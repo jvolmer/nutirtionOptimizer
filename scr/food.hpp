@@ -136,7 +136,7 @@ public:
 
     void setName(const std::string& name){ m_food->setName(name); }
 
-    std::vector<double> computeOptimizedNutritions() {return {};}
+    std::vector<double> computeOptimizedNutritions() {return m_food->computeOptimizedNutritions();}
     
     Json::Value toJson() const;
     void readFromJson(const Json::Value& jsonObject);
