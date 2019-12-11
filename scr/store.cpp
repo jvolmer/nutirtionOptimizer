@@ -5,9 +5,8 @@
 #include <string>
 #include <utility>
 
-FoodStore::FoodStore(std::string name): //, std::vector<Food> foods):
+FoodStore::FoodStore(std::string name):
     m_name {std::move(name)}
-    // m_food {std::move(foods)}
 {
 }
 
@@ -18,14 +17,6 @@ unsigned FoodStore::getNumberOfNutritions() const
     else
         return m_food[0]->getNumberOfNutritions();
 }
-
-// std::vector<std::reference_wrapper<Food>> FoodStore::getAllGoodReferences() const
-// {
-//     std::vector<std::reference_wrapper<Food>> foodRefs;
-//     for (const auto& ptr : m_food)
-//         foodRefs.push_back(std::ref(*ptr));
-//     return foodRefs;
-// }
 
 std::vector<double> FoodStore::getFoodPropertyVector(std::string property) const
 {
