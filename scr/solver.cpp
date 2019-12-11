@@ -77,7 +77,7 @@ void GnuLinearSolver::prepareAuxiliaryVariables()
     {
         for (unsigned iStruc=0; iStruc<m_structuralBound.size(); iStruc++)
         {
-            ia[iGes+1] = iAux+1, ja[iGes+1] = iStruc+1, ar[iGes+1] = m_constraintCoefficient[iAux][iStruc];
+            ia[iGes+1] = iAux+1, ja[iGes+1] = iStruc+1, ar[iGes+1] = m_constraintCoefficient[iStruc][iAux];
             iGes++;
         }
     }
