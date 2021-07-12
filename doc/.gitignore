@@ -7,4 +7,5 @@
 *.out
 *.gz
 *.toc
+*.sty
 auto/
